@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html blog.html contact.html music.html tech.html _site/
-          cp -r blog css js images _site/
+          cp -r blog css js images fonts _site/
           cp favicon.ico robots.txt sitemap.xml _site/ 2>/dev/null || true
           [ -f CNAME ] && cp CNAME _site/ || true
 

@@ -81,7 +81,7 @@
             imagesReady = loadedImgs.length >= 4;
             if (imagesReady) {
                 loadSlideByIndices(slides[0]);
-                setTimeout(runSketch, 50);
+                runSketch();
             }
         });
 
@@ -117,17 +117,10 @@
         }, ROTATE_MS);
     }
 
-    function scheduleInit() {
-        if (typeof window.requestIdleCallback !== 'undefined') {
-            window.requestIdleCallback(initHeroHydra, { timeout: 600 });
-        } else {
-            setTimeout(initHeroHydra, 0);
-        }
-    }
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', scheduleInit);
+        document.addEventListener('DOMContentLoaded', initHeroHydra);
     } else {
-        scheduleInit();
+        initHeroHydra();
     }
 
     var resizeTimeout;
