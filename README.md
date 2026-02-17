@@ -1,54 +1,92 @@
-# Den Ree - Algo DJ
+# Den Ree Studio Website
 
-My music portfolio page, showcasing my algo DJ performances.
-
-
-## Local Development
-
-Simply open `index.html` in your browser, or use a local server:
-
-```bash
-# Python 3
-python -m http.server 8000
-
-# Node.js
-npx http-server -p 8000
-```
-
-Then visit `http://localhost:8000`
-
-To stop the server:
-- Press `Ctrl+C` in the terminal where it's running
-- Or if you don't have access to that terminal, find and kill the process:
-  ```bash
-  # Find the process ID (PID) running on port 8000
-  lsof -ti :8000
-  
-  # Kill the process (replace PID with the number from above)
-  kill PID
-  
-  # Or kill it directly in one command
-  kill $(lsof -ti :8000)
-  ```
-
-## Customization
-
-### Colors
-Edit `css/style.css` to change the color scheme
-
-### Layout
-Modify the grid layout in CSS (lines 73-117) for different image arrangements
-
-### Keyboard Shortcuts
-- Press `L` to open Soundcloud
-- Press `A` to scroll to About section
-- Press `H` to scroll to top
+Professional studio website built with Jekyll. Features conversion-focused pages for tech services, music portfolio, blog, and contact.
 
 ## Tech Stack
 
-- Vanilla HTML/CSS/JavaScript
-- GitHub Actions for deployment
-- GitHub Pages for hosting
+- **Jekyll** - Static site generator
+- **SCSS** - Styling with design system
+- **Formspree** - Contact form handling
+- **GitHub Pages** - Hosting and deployment
+
+## Local Development
+
+### Prerequisites
+
+- Ruby 3.1+
+- Bundler
+
+### Setup
+
+1. Install dependencies:
+```bash
+bundle install
+```
+
+2. Run local server:
+```bash
+bundle exec jekyll serve
+```
+
+3. Visit `http://localhost:4000`
+
+### Building
+
+```bash
+bundle exec jekyll build
+```
+
+Output will be in `_site/` directory.
+
+## Project Structure
+
+```
+studio/
+├── _config.yml          # Jekyll configuration
+├── _includes/          # Reusable components
+├── _layouts/           # Page layouts
+├── _posts/             # Blog posts (markdown)
+├── _sass/              # SCSS partials
+├── css/                # Compiled CSS
+├── js/                 # JavaScript files
+├── images/             # Images
+├── index.html          # Home page
+├── tech.html           # Tech/Services page
+├── music.html          # Music portfolio
+├── blog.html           # Blog index
+└── contact.html        # Contact page
+```
+
+## Editing Content
+
+See [EDITING.md](EDITING.md) for detailed instructions on:
+- Adding/editing blog posts
+- Updating hero text
+- Modifying navigation
+- Changing social links
+- And more...
+
+## Deployment
+
+The site automatically deploys to GitHub Pages when you push to the `main` branch. The GitHub Actions workflow builds the Jekyll site and deploys it.
+
+## Customization
+
+### Design System
+
+Edit `_sass/_variables.scss` to change:
+- Colors
+- Typography
+- Spacing
+- Breakpoints
+
+### Components
+
+Edit `_sass/_components.scss` to modify:
+- Buttons
+- Cards
+- Forms
+- Navigation
 
 ## License
 

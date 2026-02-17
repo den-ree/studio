@@ -26,6 +26,9 @@ yarn-error.log*
 # Dependencies
 node_modules/
 
+# Font source (used fonts copied to fonts/)
+karrik_fonts-main/
+
 # Build outputs
 dist/
 build/

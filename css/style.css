@@ -225,7 +225,7 @@ code {
 
 .logo:hover {
     opacity: 1;
-    color: #e879f9;
+    color: #4785F4;
 }
 
 .nav-menu {
@@ -307,14 +307,14 @@ code {
 }
 
 .cta-button--primary {
-    background: #67e8f9;
-    border-color: #67e8f9;
-    color: #000;
+    background: #4785F4;
+    border-color: #4785F4;
+    color: #fff;
 }
 
 .cta-button--primary:hover {
-    background: #22b8cf;
-    border-color: #22b8cf;
+    background: #3559B2;
+    border-color: #3559B2;
     border-width: 3px;
 }
 
@@ -784,7 +784,7 @@ code {
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: #67e8f9;
+    border-color: #4785F4;
 }
 
 .form-input::placeholder,
@@ -805,10 +805,10 @@ code {
 
 .form-success {
     padding: 1.5rem;
-    background: rgba(103, 232, 249, 0.1);
-    border: 1px solid #67e8f9;
+    background: rgba(71, 133, 244, 0.15);
+    border: 1px solid #4785F4;
     border-radius: 4px;
-    color: #67e8f9;
+    color: #4785F4;
     margin-bottom: 2rem;
 }
 
@@ -834,7 +834,7 @@ code {
 }
 
 .accordion-toggle:hover {
-    color: #67e8f9;
+    color: #4785F4;
 }
 
 .accordion-content {
