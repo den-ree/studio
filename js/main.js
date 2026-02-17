@@ -94,6 +94,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Mobile: animate cards on scroll into view
+    if ('IntersectionObserver' in window && !window.matchMedia('(hover: hover)').matches) {
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                entry.target.classList.toggle('in-view', entry.isIntersecting);
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        document.querySelectorAll('.card, .card--featured').forEach(card => {
+            cardObserver.observe(card);
+        });
+    }
+
     // Accordion (FAQ)
     const accordionToggles = document.querySelectorAll('.accordion-toggle');
     accordionToggles.forEach(toggle => {
