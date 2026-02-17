@@ -1,0 +1,41 @@
+---
+---
+
+@import "variables";
+@import "typography";
+@import "layout";
+@import "components";
+
+// Main Content Spacing
+main {
+    padding-top: 80px;
+    
+    @media (max-width: $breakpoint-md) {
+        padding-top: 70px;
+    }
+}
+
+// Utility Classes
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
