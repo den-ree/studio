@@ -146,6 +146,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Random color animation for buttons on hover/focus
+    const buttonColors = [
+        'rgb(32, 115, 255)',
+        'rgb(255, 130, 210)',
+        'rgb(82, 208, 250)'
+    ];
+    
+    function getRandomColor() {
+        return buttonColors[Math.floor(Math.random() * buttonColors.length)];
+    }
+    
+    function applyRandomColor(button) {
+        const color = getRandomColor();
+        button.style.setProperty('--hover-color', color);
+    }
+    
+    function resetButtonColor(button) {
+        button.style.removeProperty('--hover-color');
+    }
+    
+    // Apply to all CTA buttons
+    document.querySelectorAll('.cta-button').forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            applyRandomColor(this);
+        });
+        
+        button.addEventListener('focus', function() {
+            applyRandomColor(this);
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            resetButtonColor(this);
+        });
+        
+        button.addEventListener('blur', function() {
+            resetButtonColor(this);
+        });
+    });
+    
     // Console message
     console.log('%cDen Ree Studio', 'font-size: 20px; font-weight: bold; color: #4785F4;');
     console.log('%cBuild products that help you stay creative.', 'font-size: 14px; color: #888;');

@@ -225,7 +225,7 @@ code {
 
 .logo:hover {
     opacity: 1;
-    color: #4785F4;
+    color: rgb(255, 130, 210);
 }
 
 .nav-menu {
@@ -295,15 +295,19 @@ code {
     background: transparent;
     border: 2px solid #fff;
     cursor: pointer;
-    transition: border-width 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition: border-width 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     white-space: nowrap;
 }
 
 .cta-button:hover {
     background: #1a1a1a;
     color: #fff;
-    border-color: #1a1a1a;
     border-width: 3px;
+}
+
+.cta-button:hover,
+.cta-button:focus {
+    border-color: var(--hover-color, #1a1a1a);
 }
 
 .cta-button--primary {
@@ -312,9 +316,10 @@ code {
     color: #fff;
 }
 
-.cta-button--primary:hover {
+.cta-button--primary:hover,
+.cta-button--primary:focus {
     background: #3559B2;
-    border-color: #3559B2;
+    border-color: var(--hover-color, #3559B2);
     border-width: 3px;
 }
 
@@ -323,9 +328,10 @@ code {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.cta-button--secondary:hover {
+.cta-button--secondary:hover,
+.cta-button--secondary:focus {
     background: #1a1a1a;
-    border-color: #1a1a1a;
+    border-color: var(--hover-color, #1a1a1a);
     border-width: 3px;
     color: #fff;
 }
@@ -382,12 +388,12 @@ code {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1) brightness(1.2) sepia(0.12) hue-rotate(180deg);
+    filter: grayscale(0.65) brightness(1.05) saturate(1.2);
     transition: filter 0.35s ease;
 }
 
 .card--featured:hover .card-image img {
-    filter: grayscale(0) brightness(1) sepia(0) hue-rotate(0deg);
+    filter: grayscale(0) brightness(1) saturate(1);
 }
 
 .card-title {
@@ -451,12 +457,12 @@ code {
 }
 
 .card--featured.card--row .card-image img {
-    filter: grayscale(1) brightness(1.2) sepia(0.12) hue-rotate(180deg);
+    filter: grayscale(0.65) brightness(1.05) saturate(1.2);
     transition: filter 0.35s ease;
 }
 
 .card--featured.card--row:hover .card-image img {
-    filter: grayscale(0) brightness(1) sepia(0) hue-rotate(0deg);
+    filter: grayscale(0) brightness(1) saturate(1);
 }
 
 /* Mobile: trigger colored state on scroll into view */
@@ -466,7 +472,7 @@ code {
     }
 
     .card--featured.in-view .card-image img {
-        filter: grayscale(0) brightness(1) sepia(0) hue-rotate(0deg);
+        filter: grayscale(0) brightness(1) saturate(1);
     }
 
     .card.in-view {
@@ -593,6 +599,8 @@ code {
     position: absolute;
     inset: 0;
     z-index: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .hero-bg::after {
@@ -603,30 +611,27 @@ code {
     pointer-events: none;
 }
 
-.hero-hydra {
-    position: absolute;
-    inset: 0;
+.hero-image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 50% 50%;
+    gap: 8px;
     width: 100%;
     height: 100%;
-    display: block;
-}
-
-.hero-bg__fallback {
     position: absolute;
     inset: 0;
+}
+
+.hero-image-grid img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.4;
-    display: none;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
 }
 
-.hero-bg.hydra-fallback .hero-hydra {
-    display: none;
-}
-
-.hero-bg.hydra-fallback .hero-bg__fallback {
-    display: block;
+.hero-image-grid img:hover {
+    opacity: 0.8;
 }
 
 .hero-content {
