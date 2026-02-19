@@ -128,6 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Random color for logo on hover/focus
+    const logoColors = [
+        'rgb(32, 115, 255)',
+        'rgb(255, 130, 210)',
+        'rgb(82, 208, 250)'
+    ];
+    const logo = document.querySelector('.logo');
+    if (logo) {
+        function setLogoColor() {
+            logo.style.setProperty('--logo-hover-color', logoColors[Math.floor(Math.random() * logoColors.length)]);
+        }
+        function clearLogoColor() {
+            logo.style.removeProperty('--logo-hover-color');
+        }
+        logo.addEventListener('mouseenter', setLogoColor);
+        logo.addEventListener('focus', setLogoColor);
+        logo.addEventListener('mouseleave', clearLogoColor);
+        logo.addEventListener('blur', clearLogoColor);
+    }
+
     // Handle image loading errors
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', function() {
