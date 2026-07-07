@@ -139,6 +139,20 @@ code {
     gap: 3.5rem;
 }
 
+/* Home block labels (Live, Software for artists) */
+.home-block__heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+}
+
+.home-block__intro {
+    max-width: 640px;
+    margin-bottom: 2.5rem;
+}
+
 .mt-lg {
     margin-top: 2rem;
 }
@@ -195,8 +209,8 @@ code {
         grid-template-columns: 1fr;
     }
 
-    /* Apps section: horizontal scroll on mobile */
-    #apps .grid--2 {
+    /* Software section: horizontal scroll on mobile */
+    #software .grid--2 {
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -210,7 +224,7 @@ code {
         padding-right: 1.5rem;
     }
 
-    #apps .grid--2 .card {
+    #software .grid--2 .card {
         flex: 0 0 min(420px, 88vw);
         scroll-snap-align: start;
     }
@@ -457,19 +471,19 @@ code {
     object-position: center center;
 }
 
-#apps .card--featured {
+#software .card--featured {
     padding: 2.5rem;
     text-align: center;
     align-items: center;
 }
 
-#apps .card--featured .card-image {
+#software .card--featured .card-image {
     background-color: #F6F6F6;
     margin: -2.5rem -2.5rem 1.75rem -2.5rem;
     width: calc(100% + 5rem);
 }
 
-#apps .card--featured .cta-button {
+#software .card--featured .cta-button {
     align-self: center;
 }
 
@@ -1137,6 +1151,23 @@ code {
 .card-status--upcoming { color: rgba(255, 255, 255, 0.3); }
 .card-status--finished { display: none; }
 
+/* Event log: next show highlighted (journal's data-status="upcoming" is muted, this is the opposite) */
+.card-status--next { color: #5CCC6A; }
+
+.card--event-upcoming {
+    border-color: rgba(92, 204, 106, 0.45);
+}
+
+/* Event log: Upcoming / Past group labels (/music) */
+.performance-group__heading {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 3rem 0 1.25rem;
+}
+
 /* Upcoming card — muted */
 .card--blog-row[data-status="upcoming"] .card-title a,
 .card--blog-row[data-status="upcoming"] .card-title {
@@ -1651,7 +1682,8 @@ main {
 /* Print: code-only view (when body.print-code is set) */
 body.print-code .header,
 body.print-code .hero-content,
-body.print-code #apps,
+body.print-code #live,
+body.print-code #software,
 body.print-code #music,
 body.print-code #contact,
 body.print-code .footer {

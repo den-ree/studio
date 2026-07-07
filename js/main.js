@@ -8,8 +8,9 @@
         '<div class="footer-container">',
         '    <div class="footer-bio"><p>Exploring the creative potentials of code.</p></div>',
         '    <nav class="footer-nav"><ul>',
-        '        <li><a href="/#apps">Apps</a></li>',
+        '        <li><a href="/#live">Live</a></li>',
         '        <li><a href="/#music">Music</a></li>',
+        '        <li><a href="/#software">Software</a></li>',
         '        <li><a href="/journal">Journal</a></li>',
         '        <li><a href="/contact">Contact</a></li>',
         '    </ul></nav>',
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Scroll to hash on load (e.g. from /journal to /#apps), accounting for fixed header
+    // Scroll to hash on load (e.g. from /journal to /#software), accounting for fixed header
     if (window.location.hash) {
         const target = document.querySelector(window.location.hash);
         if (target && header) {
