@@ -1,29 +1,37 @@
 # Den Ree
 
-Exploring the creative potentials of code.
+Musician, livecoder, A/V performer — exploring the creative potentials of code.
 
 ## Summary
 
-Den Ree is a personal site for a tech founder and musician. It showcases his own mobile apps (Content Office, Tapelet, etc) and also collaboration works, his music and livecoding performances, tech/development work, and a journal of the exploration journey with his thoughts about the current stage of coding with AI. Target audience: people interested in creative tech, livecoding, mobile app development, and electronic music.
+Den Ree is the personal site of a musician, livecoder, and A/V performer based in Rotterdam. He performs live-coded electronic music with real-time visuals (algo-DJ sets), most notably the Machine Music project with Nikilia, developed during a residency at V2_ Lab for the Unstable Media. The site keeps a performance log of upcoming and past shows (algoraves, museum programmes, livecoding events). He also builds software for artists and creators, is the founder of NDA/studio, a creative technology studio (https://www.nda.studio), and writes a journal on livecoding, creative coding, and working with AI. Target audience: people interested in livecoding, electronic music, A/V performance, creative tech, and bookings.
 
 ## Main sections
 
-- [Home](https://denree.nl/): Apps, music preview, and intro
-- [Tech](https://denree.nl/tech): Mobile app development, sprint validation, MVP builds, iOS/Flutter/backend
-- [Music](https://denree.nl/music): Livecoding DJ sets, live-coded music, algorithmic composition
-- [Journal](https://denree.nl/journal): Thoughts on building products, creative coding, staying creative
-- [Contact](https://denree.nl/contact): Get in touch for app ideas, music projects, or general inquiry
+- [Home](https://denree.nl/): Horizontal timeline of activity — performances, releases, software, journal notes
+- [Music](https://denree.nl/music): Machine Music project and the full performance log — upcoming and past shows
+- [Software](https://denree.nl/software): Software for artists — Tapelet, Content Office — and mobile development collaborations
+- [About](https://denree.nl/about): Bio, NDA/studio, contact details, and journal notes
+- [Journal](https://denree.nl/journal): Thoughts on livecoding music, creative coding, staying creative
+
+## Music
+
+- Machine Music: A/V performance with live-coded music and real-time visuals, in collaboration with Nikilia; developed at V2_ Lab for the Unstable Media
+- Performance log: upcoming and past shows at https://denree.nl/music — including Beeld & Geluid Open Culture Tech Residency (Hilversum), EXPORT × Boijmans: Night Pioneers (Pixel Pioneers programme, Museum Boijmans Van Beuningen), Algorave Amsterdam (Vondelbunker), V2_ Live: “Mirage”, and more
+- Listen: https://soundcloud.com/den-ree/machine-music-by-den-ree-x-nikilia
 
 ## Journal
 
 - [Finding Algoraves](https://denree.nl/journal/finding-algoraves): On discovering the algorave scene and what changes when music and visuals are performed live with code.
 - [Wearing the Suit](https://denree.nl/journal/wearing-the-suit): Building with blanche vs getting blanche to build for you — wear the mechanic's suit, not the Iron Legion.
 
-## Apps
+## Software for artists
 
+- Tapelet: Multi-channel audio recording app (Beta) for capturing performances and ideas
 - Content Office: Instagram planner app for creators
-- Tapelet: Multi-channel audio recording app (Beta)
+- NDA/studio: creative technology studio founded by Den Ree — https://www.nda.studio
+- Collaborations: mobile development (iOS and cross-platform) for artists, studios, and founders — prototypes to App Store releases
 
 ## Contact
 
-- [Contact page](https://denree.nl/contact)
+- For bookings and collaborations, email contact@denree.nl
