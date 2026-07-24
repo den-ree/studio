@@ -4,7 +4,7 @@ Musician, livecoder, A/V performer — exploring the creative potentials of code
 
 ## Summary
 
-Den Ree is the personal site of a musician, livecoder, and A/V performer based in Rotterdam. He performs live-coded electronic music with real-time visuals (algo-DJ sets), most notably the Machine Music project with Nikilia, developed during a residency at V2_ Lab for the Unstable Media. The site keeps a performance log of upcoming and past shows (algoraves, museum programmes, livecoding events). He also builds software for artists and creators, is the founder of NDA/studio, a creative technology studio (https://www.nda.studio), and writes a journal on livecoding, creative coding, and working with AI. Target audience: people interested in livecoding, electronic music, A/V performance, creative tech, and bookings.
+Den Ree is the personal site of a musician, livecoder, and A/V performer based in Rotterdam. He performs live-coded electronic music with real-time visuals (algo-DJ sets), most notably the Machine Music project with Nikilia, developed during a residency at V2_ Lab for the Unstable Media. The site keeps a performance log of upcoming and past shows (algoraves, museum programmes, livecoding events). He also builds software for artists and creators, is part of NDA/studio, a creative technology studio (https://www.nda.studio), and writes a journal on livecoding, creative coding, and working with AI. Target audience: people interested in livecoding, electronic music, A/V performance, creative tech, and bookings.
 
 ## Main sections
 
@@ -29,7 +29,7 @@ Den Ree is the personal site of a musician, livecoder, and A/V performer based i
 
 - Tapelet: Multi-channel audio recording app (Beta) for capturing performances and ideas
 - Content Office: Instagram planner app for creators
-- NDA/studio: creative technology studio founded by Den Ree — https://www.nda.studio
+- NDA/studio: creative technology studio — https://www.nda.studio
 - Collaborations: mobile development (iOS and cross-platform) for artists, studios, and founders — prototypes to App Store releases
 
 ## Contact
