@@ -11,7 +11,7 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://denree.nl/assets/favicon.png">
     <title>Music - Den Ree Workroom</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=5">
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="icon" type="image/png" href="/assets/favicon.png">
 </head>
@@ -29,23 +29,25 @@
                 </button>
 
                 <ul class="nav-menu" id="navMenu">
-                    <li class="nav-item"><a href="/#live" class="nav-link">Live</a></li>
-                    <li class="nav-item"><a href="/#music" class="nav-link active">Music</a></li>
-                    <li class="nav-item"><a href="/#software" class="nav-link">Software</a></li>
-                    <li class="nav-item"><a href="/journal" class="nav-link">Journal</a></li>
+                    <li class="nav-item"><a href="/music" class="nav-link active">Music</a></li>
+                    <li class="nav-item"><a href="/software" class="nav-link">Software</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
                 </ul>
 
-                <a href="/#contact" class="cta-button header-cta">CONTACT</a>
+                <a href="mailto:contact@denree.nl" class="cta-button header-cta">CONTACT</a>
             </div>
         </nav>
     </header>
 
     <main>
-        <!-- Page Header -->
-        <section class="page-header">
+        <!-- Platforms -->
+        <section class="platforms">
             <div class="container">
-                <h1 class="page-title">Music</h1>
-                <p class="page-subtitle">Musician &middot; Livecoder &middot; A/V&nbsp;performer</p>
+                <div class="social-links">
+                    <a href="https://soundcloud.com/den-ree" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud"><img src="/assets/soundcloud-logo.png" alt="SoundCloud" width="24" height="24"></a>
+                    <a href="https://denree.bandcamp.com/" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M0 8.5h8.7l-3.5 7H24l-3.5-7H0z"/></svg></a>
+                    <a href="https://open.spotify.com/artist/2FMhsq7kGfJFLoASM392X4" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a>
+                </div>
             </div>
         </section>
 
@@ -75,136 +77,12 @@
                 <h2 class="home-block__heading">Performances</h2>
 
                 <!--
-                    Adding an event: copy a card block below.
-                    - card-meta: date (Mon DD, YYYY) and city
-                    - card-title: event name; wrap in <a> when there is an event/tickets/recap link
-                    - badges: venue first (plain), then type badges (badge--livecoding, a/v, algorave, ...)
-                    - Upcoming events go in the "Upcoming" group with:
-                      class="card card--blog-row card--event-upcoming" and
-                      <span class="card-status card-status--next">upcoming</span> at the top of card-body.
-                      Move them down to "Past" (and remove those two bits) after the show.
-                    - Keep "Past" in reverse chronological order.
-                    - Also update the homepage teaser (/index.html, section id="live"): next upcoming + 2-3 recent.
+                    The log below is rendered by js/timeline.js from js/timeline-data.js
+                    (events with type 'live'; upcoming/past grouping is automatic).
+                    To add an event, edit the data file — see
+                    .claude/skills/add-timeline-event/SKILL.md.
                 -->
-
-                <h3 class="performance-group__heading">Upcoming</h3>
-                <div class="grid grid--rows">
-                    <div class="card card--blog-row card--event-upcoming">
-                        <div class="card-meta">
-                            <small class="card-date">Jul 09, 2026</small>
-                            <small class="card-date">Rotterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <span class="card-status card-status--next">upcoming</span>
-                            <h3 class="card-title">
-                                <a href="https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie" target="_blank" rel="noopener noreferrer">Pixel Pioneers &mdash; Nikilia &amp; Den Ree</a>
-                            </h3>
-                            <p class="card-description">Live coding set as part of Pixel Pioneers, Museum Boijmans Van Beuningen's programme on digital art and technology.</p>
-                            <div class="card-badges">
-                                <span class="badge">Time Is The New Space</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">a/v</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="performance-group__heading">Past</h3>
-                <div class="grid grid--rows">
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">May 28, 2026</small>
-                            <small class="card-date">Rotterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <a href="https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie" target="_blank" rel="noopener noreferrer">EXPORT &times; Boijmans: Night Pioneers</a>
-                            </h3>
-                            <p class="card-description">An evening on digital art in nightlife culture &mdash; DJs, VJs, and live coders at the intersection of technology and subculture, part of the Pixel Pioneers exhibition programme of Museum Boijmans Van Beuningen.</p>
-                            <div class="card-badges">
-                                <span class="badge">Export</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">a/v</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">Feb 14, 2026</small>
-                            <small class="card-date">Eindhoven</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">Cars 2 Carnaval</h3>
-                            <div class="card-badges">
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">2026</small>
-                            <small class="card-date">Amsterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <a href="https://radar.squat.net/nl/node/565714" target="_blank" rel="noopener noreferrer">Algorave Amsterdam</a>
-                            </h3>
-                            <p class="card-description">Machine Music at the iconic Vondelbunker.</p>
-                            <div class="card-badges">
-                                <span class="badge">Vondelbunker</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">algorave</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">2025</small>
-                            <small class="card-date">Den Haag</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">TOPLAP 48h Stream From Scratch</h3>
-                            <div class="card-badges">
-                                <span class="badge">RNDR</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">2025</small>
-                            <small class="card-date">Den Haag</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">ITERATIONS &mdash; From Scratch Sessions</h3>
-                            <div class="card-badges">
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">2025</small>
-                            <small class="card-date">Rotterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <a href="https://v2.nl/pages/v2_live-residencies" target="_blank" rel="noopener noreferrer">V2_ Live: &ldquo;Mirage&rdquo;</a>
-                            </h3>
-                            <p class="card-description">Machine Music premiere, developed during a residency at V2_ Lab for the Unstable Media.</p>
-                            <div class="card-badges">
-                                <span class="badge">V2_</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">a/v</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="performanceLog"></div>
 
                 <div class="text-center mt-lg">
                     <a href="https://soundcloud.com/den-ree" target="_blank" rel="noopener noreferrer" class="cta-button cta-button--secondary">Listen on SoundCloud</a>
@@ -218,5 +96,7 @@
 
     <script src="/js/main.js"></script>
     <script src="/js/background-code.js"></script>
+    <script src="/js/timeline-data.js?v=5"></script>
+    <script src="/js/timeline.js?v=5"></script>
 </body>
 </html>

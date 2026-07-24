@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Journal: building products, creative coding, music, AI, and staying creative.">
-    <link rel="canonical" href="https://denree.nl/journal">
-    <meta property="og:title" content="Journal - Den Ree Workroom">
-    <meta property="og:description" content="Journal: building products, creative coding, music, AI, and staying creative.">
-    <meta property="og:url" content="https://denree.nl/journal">
+    <meta name="description" content="Den Ree is a musician, livecoder, and A/V performer based in Rotterdam, and founder of NDA/studio. For bookings and collaborations: contact@denree.nl.">
+    <link rel="canonical" href="https://denree.nl/about">
+    <meta property="og:title" content="About - Den Ree Workroom">
+    <meta property="og:description" content="Den Ree is a musician, livecoder, and A/V performer based in Rotterdam, and founder of NDA/studio. For bookings and collaborations: contact@denree.nl.">
+    <meta property="og:url" content="https://denree.nl/about">
     <meta property="og:type" content="website">
-    <title>Journal - Den Ree Workroom</title>
+    <meta property="og:image" content="https://denree.nl/assets/favicon.png">
+    <title>About - Den Ree Workroom</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="icon" type="image/png" href="/assets/favicon.png">
@@ -30,7 +31,7 @@
                 <ul class="nav-menu" id="navMenu">
                     <li class="nav-item"><a href="/music" class="nav-link">Music</a></li>
                     <li class="nav-item"><a href="/software" class="nav-link">Software</a></li>
-                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link active">About</a></li>
                 </ul>
 
                 <a href="mailto:contact@denree.nl" class="cta-button header-cta">CONTACT</a>
@@ -39,30 +40,40 @@
     </header>
 
     <main>
-        <!-- Page Header -->
-        <section class="page-header">
+        <!-- About + Contact -->
+        <section id="contact" class="section section--about-contact">
             <div class="container">
-                <h1 class="page-title">Journal</h1>
-                <p class="page-subtitle">notes about making music with livecoding, building apps, experimenting with AI.</p>
+                <div class="about-contact">
+                    <div class="about-contact__about">
+                        <p>I’m Den Ree, a musician and live coder originally from Belarus, now based in Rotterdam.</p>
+                        <p>I perform electronic music through live coding as part of A/V performances in what I call algo-DJ sets, as a way to tell stories and process emotions.</p>
+                        <p>I build tools that support the creative process in everyday life, and I'm the founder of <a href="https://www.nda.studio" target="_blank" rel="noopener noreferrer">NDA/studio</a>, a creative technology studio.</p>
+                        <p>My background in software development and my artistic practice complement each other, shaping how I approach product thinking, code architecture, creative technology, and musical expression.</p>
+                    </div>
+                    <div class="about-contact__photo">
+                        <img src="/images/about-me.png" alt="Den Ree">
+                    </div>
+                    <div class="about-contact__contact">
+                        <h2 class="about-contact__heading">CONTACT</h2>
+                        <p class="about-contact__prompt">For bookings and collaborations:</p>
+                        <a href="mailto:contact@denree.nl" class="about-contact__email">contact@denree.nl</a>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="section">
+        <!-- Journal -->
+        <section id="journal" class="section section--home-block">
             <div class="container">
-
-                <!-- Active filter display — populated by JS when a tag is tapped -->
-                <div class="journal-active-filter" id="journalActiveFilter"></div>
-
-                <!-- Notes -->
-                <div class="grid grid--rows" id="journalGrid">
-
-                    <div class="card card--blog-row" data-thread="livecoding" data-status="finished">
+                <h2 class="home-block__heading">Journal</h2>
+                <p class="home-block__intro">Notes about making music with livecoding, building apps, experimenting with AI.</p>
+                <div class="grid grid--rows">
+                    <div class="card card--blog-row">
                         <div class="card-meta">
                             <small class="card-date">Mar 06, 2026</small>
                             <small class="card-date">Amsterdam</small>
                         </div>
                         <div class="card-body">
-                            <span class="card-status card-status--finished">finished</span>
                             <h3 class="card-title">
                                 <a href="/journal/finding-algoraves">Finding Algoraves</a>
                             </h3>
@@ -74,13 +85,12 @@
                         </div>
                     </div>
 
-                    <div class="card card--blog-row" data-thread="ai" data-status="finished">
+                    <div class="card card--blog-row">
                         <div class="card-meta">
                             <small class="card-date">Feb 28, 2026</small>
                             <small class="card-date">Rotterdam</small>
                         </div>
                         <div class="card-body">
-                            <span class="card-status card-status--finished">finished</span>
                             <h3 class="card-title">
                                 <a href="/journal/wearing-the-suit">Wearing the Suit</a>
                             </h3>
@@ -91,13 +101,12 @@
                         </div>
                     </div>
 
-                    <div class="card card--blog-row" data-thread="ai" data-status="finished">
+                    <div class="card card--blog-row">
                         <div class="card-meta">
                             <small class="card-date">Sep 11, 2025</small>
                             <small class="card-date">Amsterdam</small>
                         </div>
                         <div class="card-body">
-                            <span class="card-status card-status--finished">finished</span>
                             <h3 class="card-title">
                                 <a href="/journal/why-blanche">Why blanche?</a>
                             </h3>
@@ -106,7 +115,9 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="text-center mt-lg">
+                    <a href="/journal" class="cta-button cta-button--secondary">All journal notes</a>
                 </div>
             </div>
         </section>
@@ -117,56 +128,5 @@
 
     <script src="/js/main.js"></script>
     <script src="/js/background-code.js"></script>
-    <script>
-        const cards = document.querySelectorAll('#journalGrid .card--blog-row');
-        const activeFilterEl = document.getElementById('journalActiveFilter');
-        let activeTag = null;
-
-        function applyFilter(tag) {
-            cards.forEach(card => {
-                if (!tag) {
-                    card.classList.remove('is-hidden');
-                    return;
-                }
-                const match = Array.from(card.querySelectorAll('.badge'))
-                    .some(b => b.textContent.trim() === tag);
-                card.classList.toggle('is-hidden', !match);
-            });
-        }
-
-        function showChip(label, badgeClass) {
-            activeFilterEl.innerHTML =
-                `<span class="journal-tag-chip ${badgeClass}" id="activeTagChip">
-                    ${label} <span class="journal-tag-chip__remove">×</span>
-                </span>`;
-            document.getElementById('activeTagChip').addEventListener('click', clearFilter);
-        }
-
-        function clearFilter() {
-            activeTag = null;
-            activeFilterEl.innerHTML = '';
-            applyFilter(null);
-        }
-
-        document.querySelectorAll('#journalGrid .badge').forEach(badge => {
-            badge.style.cursor = 'pointer';
-            badge.addEventListener('click', e => {
-                e.stopPropagation();
-                const label = badge.textContent.trim();
-
-                if (activeTag === label) {
-                    clearFilter();
-                    return;
-                }
-
-                activeTag = label;
-
-                // Carry badge classes to chip so thread colors apply
-                const chipClass = badge.className.replace('badge', '').trim();
-                showChip(label, 'badge ' + chipClass);
-                applyFilter(label);
-            });
-        });
-    </script>
 </body>
 </html>

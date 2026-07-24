@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Musician, livecoder, A/V performer. Live-coded music, real-time visuals, and software for artists — exploring the creative potentials of code.">
+    <meta name="description" content="Musician, livecoder, A/V performer. A timeline of performances, releases, and software for artists — exploring the creative potentials of code.">
     <link rel="canonical" href="https://denree.nl/">
     <meta property="og:title" content="Den Ree — musician, livecoder, A/V performer">
-    <meta property="og:description" content="Musician, livecoder, A/V performer. Live-coded music, real-time visuals, and software for artists — exploring the creative potentials of code.">
+    <meta property="og:description" content="Musician, livecoder, A/V performer. A timeline of performances, releases, and software for artists — exploring the creative potentials of code.">
     <meta property="og:url" content="https://denree.nl/">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://denree.nl/assets/favicon.png">
     <title>Den Ree — musician, livecoder, A/V performer</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=5">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
@@ -21,167 +21,47 @@
         <nav class="navbar">
             <div class="navbar-container">
                 <a href="/" class="logo">Den Ree</a>
-                
+
                 <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                
+
                 <ul class="nav-menu" id="navMenu">
-                    <li class="nav-item"><a href="#live" class="nav-link">Live</a></li>
-                    <li class="nav-item"><a href="#music" class="nav-link">Music</a></li>
-                    <li class="nav-item"><a href="#software" class="nav-link">Software</a></li>
-                    <li class="nav-item"><a href="/journal" class="nav-link">Journal</a></li>
+                    <li class="nav-item"><a href="/music" class="nav-link">Music</a></li>
+                    <li class="nav-item"><a href="/software" class="nav-link">Software</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
                 </ul>
-                
-                <a href="#contact" class="cta-button header-cta">CONTACT</a>
+
+                <a href="mailto:contact@denree.nl" class="cta-button header-cta">CONTACT</a>
             </div>
         </nav>
     </header>
 
     <main>
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero-bg" aria-hidden="true">
-                <div class="hero-image-grid">
-                    <img src="images/performance-1.3.jpg" alt="Performance image 1">
-                    <img src="images/performance-1.2.jpg" alt="Performance image 2">
-                    <img src="images/performance-1.5.jpg" alt="Performance image 3">
-                </div>
-            </div>
-            <div class="hero-content container">
+        <!--
+            Timeline universe: full-screen canvas, newest events on the left, scroll right
+            to go back in time. Nodes are rendered by js/timeline.js from the data in
+            js/timeline-data.js — to add an event, edit that data file (see
+            .claude/skills/add-timeline-event/SKILL.md). Positions are automatic.
+        -->
+        <section id="timeline" class="universe" aria-label="Timeline of performances, releases, and notes">
+            <div class="universe-title" id="universeTitle">
                 <h1 class="hero-title">Exploring the creative<br>potentials of code</h1>
                 <p class="hero-subtitle">Musician &middot; Livecoder &middot; A/V&nbsp;performer</p>
             </div>
-        </section>
-
-        <!-- Live -->
-        <section id="live" class="section section--home-block">
-            <div class="container">
-                <h2 class="home-block__heading">Live</h2>
-                <div class="grid grid--rows">
-                    <div class="card card--blog-row card--event-upcoming">
-                        <div class="card-meta">
-                            <small class="card-date">Jul 09, 2026</small>
-                            <small class="card-date">Rotterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <span class="card-status card-status--next">upcoming</span>
-                            <h3 class="card-title">
-                                <a href="https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie" target="_blank" rel="noopener noreferrer">Pixel Pioneers &mdash; Nikilia &amp; Den Ree</a>
-                            </h3>
-                            <div class="card-badges">
-                                <span class="badge">Time Is The New Space</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">a/v</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">May 28, 2026</small>
-                            <small class="card-date">Rotterdam</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <a href="https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie" target="_blank" rel="noopener noreferrer">EXPORT &times; Boijmans: Night Pioneers</a>
-                            </h3>
-                            <div class="card-badges">
-                                <span class="badge">Export</span>
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                                <span class="badge">a/v</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card--blog-row">
-                        <div class="card-meta">
-                            <small class="card-date">Feb 14, 2026</small>
-                            <small class="card-date">Eindhoven</small>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">Cars 2 Carnaval</h3>
-                            <div class="card-badges">
-                                <span class="badge badge--thread badge--livecoding">livecoding</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-lg">
-                    <a href="/music#live" class="cta-button cta-button--secondary">All performances</a>
+            <div class="universe-strip" id="timelineStrip" tabindex="0">
+                <div class="universe-canvas" id="tlCanvas">
+                    <svg class="timeline-lines" id="tlSvg" aria-hidden="true"></svg>
                 </div>
             </div>
-        </section>
 
-        <!-- Music -->
-        <section id="music" class="section section--home-block">
-            <div class="container">
-                <div class="music-card">
-                    <div class="music-card__top">
-                        <div class="music-card__image">
-                            <img src="images/performance-1.4.jpg" alt="Machine Music A/V Performance">
-                        </div>
-                        <div class="music-card__embed">
-                            <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2228576243&color=%2384569c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
-                        </div>
-                    </div>
-                    <div class="music-card__body">
-                        <h3 class="music-card__title">Machine Music</h3>
-                        <p class="music-card__text">A/V performance with live-coded music and real-time visuals. The project was developed during a residency at <a href="https://v2.nl/pages/v2_live-residencies" target="_blank" rel="noopener noreferrer">V2_ Lab for the Unstable Media</a> and in collaboration with <a href="https://nikischeijen.nl/" target="_blank" rel="noopener noreferrer">Nikilia</a>. Machine Music blends algorithmic composition with generative visuals, creating a unique audio-visual experience where code becomes an instrument on stage.<br/><br/>It was also performed at <a href="https://radar.squat.net/nl/node/565714" target="_blank" rel="noopener noreferrer">Algorave in Amsterdam</a> at the iconic Vondelbunker.</p>
-                    </div>
-                </div>
+            <div class="timeline-arrows">
+                <button class="timeline-arrow" id="tlPrev" aria-label="Scroll timeline back">&larr;</button>
+                <button class="timeline-arrow" id="tlNext" aria-label="Scroll timeline forward">&rarr;</button>
             </div>
-        </section>
-
-        <!-- Software -->
-        <section id="software" class="section section--home-block">
-            <div class="container">
-                <h2 class="home-block__heading">Software for artists</h2>
-                <p class="home-block__intro">Tools I build to support the creative process — for performers, musicians, and content creators.</p>
-                <div class="grid grid--2">
-                    <div class="card card--featured">
-                        <div class="card-image">
-                            <img src="images/app-2.png" alt="Tapelet" class="card-image--contain">
-                        </div>
-                        <h3 class="card-title">Tapelet</h3>
-                        <p class="card-description">Multi-channel audio recording app (Beta) for capturing performances and ideas instantly.</p>
-                        <a href="https://tapelet.com/" target="_blank" rel="noopener noreferrer" class="cta-button cta-button--secondary">View details</a>
-                    </div>
-                    <div class="card card--featured">
-                        <div class="card-image">
-                            <img src="images/app-1.png" alt="Content Office">
-                        </div>
-                        <h3 class="card-title">Content Office</h3>
-                        <p class="card-description">Instagram planner app for creators to plan and schedule their content.</p>
-                        <a href="https://apps.apple.com/us/app/content-office-planner-for-ig/id1137376676" target="_blank" rel="noopener noreferrer" class="cta-button cta-button--secondary">View details</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About + Contact -->
-        <section id="contact" class="section section--about-contact">
-            <div class="container">
-                <div class="about-contact">
-                    <div class="about-contact__about">
-                        <h2 class="about-contact__heading">ABOUT</h2>
-                        <p>I’m Den Ree, a musician and live coder originally from Belarus, now based in Rotterdam.</p>
-                        <p>I perform electronic music through live coding as part of A/V performances in what I call algo-DJ sets, as a way to tell stories and process emotions.</p>
-                        <p>I build tools that support the creative process in everyday life, and I'm the founder of <a href="https://www.nda.studio" target="_blank" rel="noopener noreferrer">NDA/studio</a>, a creative technology studio.</p>
-                        <p>My background in software development and my artistic practice complement each other, shaping how I approach product thinking, code architecture, creative technology, and musical expression.</p>
-                    </div>
-                    <div class="about-contact__photo">
-                        <img src="images/about-me.png" alt="Den Ree">
-                    </div>
-                    <div class="about-contact__contact">
-                        <h2 class="about-contact__heading">CONTACT</h2>
-                        <p class="about-contact__prompt">For bookings and collaborations:</p>
-                        <a href="mailto:contact@denree.nl" class="about-contact__email">contact@denree.nl</a>
-                    </div>
-                </div>
-            </div>
+            <span class="universe-hint" id="universeHint" aria-hidden="true">swipe &rarr;</span>
         </section>
     </main>
 
@@ -190,5 +70,7 @@
 
     <script src="js/main.js"></script>
     <script src="js/background-code.js"></script>
+    <script src="js/timeline-data.js?v=5"></script>
+    <script src="js/timeline.js?v=5"></script>
 </body>
 </html>

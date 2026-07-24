@@ -8,16 +8,17 @@ Den Ree is the personal site of a musician, livecoder, and A/V performer based i
 
 ## Main sections
 
-- [Home](https://denree.nl/): Performance log (Live), Machine Music, software for artists, about, contact
+- [Home](https://denree.nl/): Horizontal timeline of activity — performances, releases, software, journal notes
 - [Music](https://denree.nl/music): Machine Music project and the full performance log — upcoming and past shows
+- [Software](https://denree.nl/software): Software for artists — Tapelet, Content Office — and mobile development collaborations
+- [About](https://denree.nl/about): Bio, NDA/studio, contact details, and journal notes
 - [Journal](https://denree.nl/journal): Thoughts on livecoding music, creative coding, staying creative
-- [Contact](https://denree.nl/contact): Bookings, collaborations, and general inquiry
 
 ## Music
 
 - Machine Music: A/V performance with live-coded music and real-time visuals, in collaboration with Nikilia; developed at V2_ Lab for the Unstable Media
-- Performance log: upcoming and past shows at https://denree.nl/music — including EXPORT × Boijmans: Night Pioneers (Pixel Pioneers programme, Museum Boijmans Van Beuningen), Algorave Amsterdam (Vondelbunker), TOPLAP 48h Stream From Scratch, and more
-- Listen: https://soundcloud.com/den-ree
+- Performance log: upcoming and past shows at https://denree.nl/music — including Beeld & Geluid Open Culture Tech Residency (Hilversum), EXPORT × Boijmans: Night Pioneers (Pixel Pioneers programme, Museum Boijmans Van Beuningen), Algorave Amsterdam (Vondelbunker), V2_ Live: “Mirage”, and more
+- Listen: https://soundcloud.com/den-ree/machine-music-by-den-ree-x-nikilia
 
 ## Journal
 
@@ -29,7 +30,8 @@ Den Ree is the personal site of a musician, livecoder, and A/V performer based i
 - Tapelet: Multi-channel audio recording app (Beta) for capturing performances and ideas
 - Content Office: Instagram planner app for creators
 - NDA/studio: creative technology studio founded by Den Ree — https://www.nda.studio
+- Collaborations: mobile development (iOS and cross-platform) for artists, studios, and founders — prototypes to App Store releases
 
 ## Contact
 
-- [Contact page](https://denree.nl/contact) — for bookings and collaborations: contact@denree.nl
+- For bookings and collaborations, email contact@denree.nl
