@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          cp -r contact music journal css js images fonts assets _site/
+          cp -r about software music journal css js images fonts assets _site/
           cp robots.txt sitemap.xml _site/ 2>/dev/null || true
           [ -f CNAME ] && cp CNAME _site/ || true
 
