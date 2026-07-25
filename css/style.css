@@ -1221,7 +1221,7 @@ body.page-universe main {
     overscroll-behavior-x: contain;
     overscroll-behavior-y: none;
     cursor: grab;
-    touch-action: pan-x;
+    touch-action: pinch-zoom;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }

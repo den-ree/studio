@@ -312,9 +312,11 @@
                 if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
                 touchAxis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
             }
-            if (touchAxis !== 'x') return;
+            // Horizontal swipes pan directly; vertical swipes mirror the desktop
+            // wheel mapping (swipe up = scroll deeper into the timeline).
+            var delta = touchAxis === 'x' ? dx : dy;
             dragMoved = true;
-            strip.scrollLeft = touchStartScroll - dx;
+            strip.scrollLeft = touchStartScroll - delta;
             e.preventDefault();
         }, { passive: false });
         strip.addEventListener('touchend', function () {
