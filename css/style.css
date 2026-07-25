@@ -1177,6 +1177,16 @@ code {
     margin: 3rem 0 1.25rem;
 }
 
+/* Homepage: viewport-locked stage — only the timeline scrolls (horizontally) */
+body.page-universe {
+    height: 100dvh;
+    overflow: hidden;
+}
+
+body.page-universe #site-footer {
+    display: none;
+}
+
 /* Timeline universe (home): full-screen HUD node graph */
 .universe {
     position: relative;
@@ -1184,11 +1194,17 @@ code {
     min-height: 560px;
 }
 
+body.page-universe .universe {
+    height: calc(100dvh - 80px);
+    min-height: 0;
+}
+
 .universe-strip {
     height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     cursor: grab;
+    touch-action: pan-x;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
@@ -1312,6 +1328,38 @@ a.tl-node:hover {
 .tl-node--software { --node-color: #FF82D2; }
 .tl-node--release { --node-color: #B49CFF; }
 .tl-node--upcoming { --node-color: #5CCC6A; }
+
+.tl-node--coming {
+    width: auto;
+    max-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.tl-node--coming .tl-node__title {
+    max-width: none;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5CCC6A;
+}
+
+.tl-node--coming .tl-node__ellipsis {
+    display: inline-block;
+    width: 1.5em;
+    text-align: left;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: tl-coming-ellipsis 1.4s steps(4, end) infinite;
+}
+
+@keyframes tl-coming-ellipsis {
+    0% { width: 0; }
+    100% { width: 1.5em; }
+}
 
 .tl-node__marker {
     position: relative;
@@ -1506,6 +1554,11 @@ a.tl-node:hover .tl-node__media {
     .universe {
         height: calc(100svh - 70px);
         min-height: 480px;
+    }
+
+    body.page-universe .universe {
+        height: calc(100svh - 70px);
+        min-height: 0;
     }
 
     .universe-title {

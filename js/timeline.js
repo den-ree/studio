@@ -92,7 +92,7 @@
 
     function buildNode(ev) {
         var isLink = !!ev.link;
-        var node = el(isLink ? 'a' : 'div', 'tl-node tl-node--' + ev.type);
+        var node = el(isLink ? 'a' : 'div', 'tl-node tl-node--' + (ev._coming ? 'live' : ev.type));
         var imp = importanceOf(ev);
         if (imp !== 'normal') node.classList.add('tl-node--' + imp);
         if (isLink) {
@@ -102,9 +102,12 @@
                 node.rel = 'noopener noreferrer';
             }
         }
-        if (isUpcoming(ev)) {
+        if (isUpcoming(ev) && !ev._coming) {
             node.classList.add('tl-node--upcoming');
             node.appendChild(el('span', 'tl-node__flag', 'upcoming'));
+        }
+        if (ev._coming) {
+            node.classList.add('tl-node--upcoming', 'tl-node--coming');
         }
 
         var marker = el('span', 'tl-node__marker');
@@ -112,9 +115,16 @@
         marker.appendChild(el('span', 'tl-node__cross', '+'));
         node.appendChild(marker);
 
-        var label = universeDate(ev) + (ev.city ? ' · ' + ev.city : '');
-        node.appendChild(el('span', 'tl-node__label', label));
-        node.appendChild(el('span', 'tl-node__title', ev.title));
+        if (ev._coming) {
+            var comingTitle = el('span', 'tl-node__title');
+            comingTitle.appendChild(document.createTextNode('next'));
+            comingTitle.appendChild(el('span', 'tl-node__ellipsis', '...'));
+            node.appendChild(comingTitle);
+        } else {
+            var label = universeDate(ev) + (ev.city ? ' · ' + ev.city : '');
+            node.appendChild(el('span', 'tl-node__label', label));
+            node.appendChild(el('span', 'tl-node__title', ev.title));
+        }
 
         var imgs = imagesOf(ev);
         if (imgs.length) {
@@ -144,34 +154,63 @@
         return node;
     }
 
+    function nextUpcoming() {
+        var upcoming = events.filter(isUpcoming);
+        if (!upcoming.length) return null;
+        return upcoming.reduce(function (soonest, ev) {
+            return ev.date < soonest.date ? ev : soonest;
+        });
+    }
+
+    // First node sits under the intro title (next… placeholder, or the next show).
+    // Rest of the timeline starts past the title’s right edge, connected by the polyline.
+    var COMING_Y = 62;
+
     function initUniverse() {
         var strip = document.getElementById('timelineStrip');
         var canvas = document.getElementById('tlCanvas');
         var svg = document.getElementById('tlSvg');
         if (!strip || !canvas || !svg) return;
 
-        var nodes = events.map(buildNode);
+        var next = nextUpcoming();
+        var head = next || {
+            type: 'live',
+            date: '',
+            title: 'next…',
+            importance: 'normal',
+            _coming: true
+        };
+        var rest = next
+            ? events.filter(function (ev) { return ev !== next; })
+            : events.slice();
+        var universeEvents = [head].concat(rest);
+
+        var nodes = universeEvents.map(buildNode);
         nodes.forEach(function (n) { canvas.appendChild(n); });
 
         function layout() {
             var vw = window.innerWidth;
             var widths = nodes.map(function (n) { return n.offsetWidth || 200; });
 
-            // Reserve the first screen for the centred intro title, then start the
-            // timeline just past its right edge (same behaviour on every width).
             var titleEl = document.getElementById('universeTitle');
             var titleW = titleEl ? titleEl.getBoundingClientRect().width : Math.min(vw * 0.8, 700);
+            // Center the first node under the title; trail starts just past the title edge.
+            var x0 = Math.round(vw / 2 - widths[0] / 2);
             var startX = Math.round(vw / 2 + titleW / 2 + TITLE_MARGIN);
 
-            var xs = [startX];
-            for (var i = 1; i < events.length; i++) {
-                var gap = widths[i - 1] + GUTTER + dateExtra(events[i - 1], events[i]);
-                xs.push(xs[i - 1] + Math.round(gap));
+            var xs = [x0];
+            for (var i = 1; i < universeEvents.length; i++) {
+                if (i === 1) {
+                    xs.push(Math.max(startX, x0 + widths[0] + GUTTER));
+                } else {
+                    var gap = widths[i - 1] + GUTTER + dateExtra(universeEvents[i - 1], universeEvents[i]);
+                    xs.push(xs[i - 1] + Math.round(gap));
+                }
             }
 
             nodes.forEach(function (n, i) {
                 n.style.setProperty('--x', xs[i] + 'px');
-                n.style.setProperty('--y', nodeY(i, events[i]) + '%');
+                n.style.setProperty('--y', (i === 0 ? COMING_Y : nodeY(i - 1, universeEvents[i])) + '%');
             });
             canvas.style.width = (xs[xs.length - 1] + widths[widths.length - 1] + CANVAS_TAIL) + 'px';
             drawLines();
@@ -214,12 +253,17 @@
             if (title) title.classList.toggle('is-hidden', exploring);
         }, { passive: true });
 
-        // Vertical wheel moves the strip while hovering it
-        strip.addEventListener('wheel', function (e) {
-            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                strip.scrollLeft += e.deltaY;
-                e.preventDefault();
-            }
+        // Vertical wheel/trackpad drives the strip horizontally (down → into timeline).
+        // On the viewport-locked homepage, capture on window so header/chrome still work.
+        window.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) return; // leave pinch-zoom to the browser
+            if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+            var max = strip.scrollWidth - strip.clientWidth;
+            if (max <= 0) return;
+            var nextScroll = Math.max(0, Math.min(max, strip.scrollLeft + e.deltaY));
+            if (nextScroll === strip.scrollLeft) return;
+            strip.scrollLeft = nextScroll;
+            e.preventDefault();
         }, { passive: false });
 
         // Drag-to-scroll with the mouse
