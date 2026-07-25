@@ -1178,7 +1178,16 @@ code {
 }
 
 /* Homepage: viewport-locked stage — only the timeline scrolls (horizontally) */
+html:has(body.page-universe) {
+    height: 100%;
+    overflow: hidden;
+}
+
 body.page-universe {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     height: 100dvh;
     overflow: hidden;
 }
@@ -1199,10 +1208,18 @@ body.page-universe .universe {
     min-height: 0;
 }
 
+body.page-universe main {
+    height: 100%;
+}
+
 .universe-strip {
     height: 100%;
+    width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
     cursor: grab;
     touch-action: pan-x;
     scrollbar-width: thin;

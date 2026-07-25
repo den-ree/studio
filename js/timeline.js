@@ -285,6 +285,47 @@
             dragging = false;
             strip.classList.remove('is-dragging');
         });
+
+        // iOS Safari: nested overflow-x often fails when the page is viewport-locked.
+        // Drive scrollLeft from touch so swipe works even when native pan does not.
+        var touchDragging = false;
+        var touchStartX = 0;
+        var touchStartY = 0;
+        var touchStartScroll = 0;
+        var touchAxis = null; // 'x' | 'y' | null until decided
+        strip.addEventListener('touchstart', function (e) {
+            if (e.touches.length !== 1) return;
+            touchDragging = true;
+            touchAxis = null;
+            dragMoved = false;
+            touchStartX = e.touches[0].pageX;
+            touchStartY = e.touches[0].pageY;
+            touchStartScroll = strip.scrollLeft;
+        }, { passive: true });
+        strip.addEventListener('touchmove', function (e) {
+            if (!touchDragging || e.touches.length !== 1) return;
+            var x = e.touches[0].pageX;
+            var y = e.touches[0].pageY;
+            var dx = x - touchStartX;
+            var dy = y - touchStartY;
+            if (!touchAxis) {
+                if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+                touchAxis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+            }
+            if (touchAxis !== 'x') return;
+            dragMoved = true;
+            strip.scrollLeft = touchStartScroll - dx;
+            e.preventDefault();
+        }, { passive: false });
+        strip.addEventListener('touchend', function () {
+            touchDragging = false;
+            touchAxis = null;
+        }, { passive: true });
+        strip.addEventListener('touchcancel', function () {
+            touchDragging = false;
+            touchAxis = null;
+        }, { passive: true });
+
         // Suppress node clicks that were actually drags
         strip.addEventListener('click', function (e) {
             if (dragMoved) {
