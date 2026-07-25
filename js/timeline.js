@@ -117,7 +117,7 @@
 
         if (ev._coming) {
             var comingTitle = el('span', 'tl-node__title');
-            comingTitle.appendChild(document.createTextNode('next'));
+            comingTitle.appendChild(document.createTextNode('next is coming'));
             comingTitle.appendChild(el('span', 'tl-node__ellipsis', '...'));
             node.appendChild(comingTitle);
         } else {
@@ -176,7 +176,7 @@
         var head = next || {
             type: 'live',
             date: '',
-            title: 'next…',
+            title: 'next is coming…',
             importance: 'normal',
             _coming: true
         };
@@ -236,11 +236,109 @@
         window.addEventListener('load', drawLines);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
 
+        // --- shared scroll state: one writer, one animation slot ---
+        // Native scrollLeft clamps at [0, max]; iOS-style overscroll is kept as a
+        // logical `overshoot` and rendered with resistance via a canvas translate.
+        var reduceMotion = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var animRaf = null;
+        var overshoot = 0;
+
+        function maxScroll() { return strip.scrollWidth - strip.clientWidth; }
+
+        function cancelAnimation() {
+            if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
+        }
+
+        function renderOvershoot() {
+            if (overshoot) {
+                var visual = overshoot / (1 + Math.abs(overshoot) / 150);
+                canvas.style.transform = 'translateX(' + (-visual) + 'px)';
+            } else {
+                canvas.style.transform = '';
+            }
+        }
+
+        function setScroll(pos, allowOverscroll) {
+            var clamped = Math.max(0, Math.min(maxScroll(), pos));
+            strip.scrollLeft = clamped;
+            overshoot = allowOverscroll ? pos - clamped : 0;
+            renderOvershoot();
+        }
+
+        function springBack() {
+            var start = overshoot;
+            if (!start) return;
+            cancelAnimation();
+            var t0 = performance.now();
+            var DURATION = 250;
+            animRaf = requestAnimationFrame(function frame(now) {
+                var t = Math.min(1, (now - t0) / DURATION);
+                overshoot = start * Math.pow(1 - t, 3);
+                if (t >= 1) { overshoot = 0; animRaf = null; }
+                else animRaf = requestAnimationFrame(frame);
+                renderOvershoot();
+            });
+        }
+
+        // Momentum ran into an edge: swell to a resisted peak, then spring home.
+        function bounce(peak) {
+            cancelAnimation();
+            var t0 = performance.now();
+            var OUT = 100, BACK = 250;
+            animRaf = requestAnimationFrame(function frame(now) {
+                var elapsed = now - t0;
+                if (elapsed < OUT) {
+                    overshoot = peak * (elapsed / OUT);
+                } else if (elapsed < OUT + BACK) {
+                    overshoot = peak * Math.pow(1 - (elapsed - OUT) / BACK, 3);
+                } else {
+                    overshoot = 0;
+                    renderOvershoot();
+                    animRaf = null;
+                    return;
+                }
+                renderOvershoot();
+                animRaf = requestAnimationFrame(frame);
+            });
+        }
+
+        // Free glide after a flick (velocity in scrollLeft px/ms).
+        function startGlide(v) {
+            cancelAnimation();
+            var pos = strip.scrollLeft;
+            var last = performance.now();
+            animRaf = requestAnimationFrame(function frame(now) {
+                var dt = Math.min(50, Math.max(1, now - last));
+                last = now;
+                pos += v * dt;
+                v *= Math.pow(0.95, dt / 16);
+                var max = maxScroll();
+                if (pos <= 0 && v < 0) {
+                    strip.scrollLeft = 0;
+                    bounce(Math.max(-120, v * 60));
+                    return;
+                }
+                if (pos >= max && v > 0) {
+                    strip.scrollLeft = max;
+                    bounce(Math.min(120, v * 60));
+                    return;
+                }
+                strip.scrollLeft = pos;
+                if (Math.abs(v) < 0.02) { animRaf = null; return; }
+                animRaf = requestAnimationFrame(frame);
+            });
+        }
+
         var step = 400;
         document.getElementById('tlPrev').addEventListener('click', function () {
+            cancelAnimation();
+            setScroll(strip.scrollLeft, false);
             strip.scrollBy({ left: -step, behavior: 'smooth' });
         });
         document.getElementById('tlNext').addEventListener('click', function () {
+            cancelAnimation();
+            setScroll(strip.scrollLeft, false);
             strip.scrollBy({ left: step, behavior: 'smooth' });
         });
 
@@ -258,17 +356,20 @@
         window.addEventListener('wheel', function (e) {
             if (e.ctrlKey) return; // leave pinch-zoom to the browser
             if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-            var max = strip.scrollWidth - strip.clientWidth;
+            var max = maxScroll();
             if (max <= 0) return;
             var nextScroll = Math.max(0, Math.min(max, strip.scrollLeft + e.deltaY));
-            if (nextScroll === strip.scrollLeft) return;
-            strip.scrollLeft = nextScroll;
+            if (nextScroll === strip.scrollLeft && !overshoot && !animRaf) return;
+            cancelAnimation();
+            setScroll(nextScroll, false);
             e.preventDefault();
         }, { passive: false });
 
         // Drag-to-scroll with the mouse
         var dragging = false, dragMoved = false, startX = 0, startScroll = 0;
         strip.addEventListener('mousedown', function (e) {
+            cancelAnimation();
+            setScroll(strip.scrollLeft, false);
             dragging = true;
             dragMoved = false;
             startX = e.pageX;
@@ -293,14 +394,22 @@
         var touchStartY = 0;
         var touchStartScroll = 0;
         var touchAxis = null; // 'x' | 'y' | null until decided
+        var touchLastPos = 0;
+        var touchLastTime = 0;
+        var touchVelocity = 0; // scrollLeft px/ms
         strip.addEventListener('touchstart', function (e) {
             if (e.touches.length !== 1) return;
+            cancelAnimation();
             touchDragging = true;
             touchAxis = null;
             dragMoved = false;
             touchStartX = e.touches[0].pageX;
             touchStartY = e.touches[0].pageY;
-            touchStartScroll = strip.scrollLeft;
+            // Fold any mid-bounce overshoot into the start so the finger
+            // picks the strip up without a jump.
+            touchStartScroll = strip.scrollLeft + overshoot;
+            touchLastTime = 0;
+            touchVelocity = 0;
         }, { passive: true });
         strip.addEventListener('touchmove', function (e) {
             if (!touchDragging || e.touches.length !== 1) return;
@@ -314,19 +423,36 @@
             }
             // Horizontal swipes pan directly; vertical swipes mirror the desktop
             // wheel mapping (swipe up = scroll deeper into the timeline).
+            var pos = touchAxis === 'x' ? x : y;
+            var now = e.timeStamp || performance.now();
+            if (touchLastTime) {
+                var dt = now - touchLastTime;
+                if (dt > 0) {
+                    touchVelocity = 0.8 * ((touchLastPos - pos) / dt) + 0.2 * touchVelocity;
+                }
+            }
+            touchLastPos = pos;
+            touchLastTime = now;
             var delta = touchAxis === 'x' ? dx : dy;
             dragMoved = true;
-            strip.scrollLeft = touchStartScroll - delta;
+            setScroll(touchStartScroll - delta, true);
             e.preventDefault();
         }, { passive: false });
-        strip.addEventListener('touchend', function () {
+        function touchRelease(e) {
+            if (!touchDragging) return;
             touchDragging = false;
             touchAxis = null;
-        }, { passive: true });
-        strip.addEventListener('touchcancel', function () {
-            touchDragging = false;
-            touchAxis = null;
-        }, { passive: true });
+            // A finger that rested before lifting shouldn't fling.
+            var stale = !touchLastTime ||
+                ((e.timeStamp || performance.now()) - touchLastTime) > 80;
+            if (overshoot) {
+                springBack();
+            } else if (!stale && !reduceMotion && Math.abs(touchVelocity) > 0.3) {
+                startGlide(touchVelocity);
+            }
+        }
+        strip.addEventListener('touchend', touchRelease, { passive: true });
+        strip.addEventListener('touchcancel', touchRelease, { passive: true });
 
         // Suppress node clicks that were actually drags
         strip.addEventListener('click', function (e) {
