@@ -25,8 +25,8 @@
   var CONFIG = {
     FONT_SIZE_MIN: 6,
     FONT_SIZE_MAX: 10,
-    OPACITY_MIN: 0.07,
-    OPACITY_MAX: 0.13,
+    OPACITY_MIN: 0.12,
+    OPACITY_MAX: 0.20,
     FONT_FAMILY: "'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace",
     COLOR: '255, 255, 255',
     LINE_HEIGHT: 1.45,
@@ -117,7 +117,7 @@
       var fontSize = Math.round(rnd(fontSizeMin, fontSizeMax));
       var depthT   = (fontSize - fontSizeMin) / (fontSizeMax - fontSizeMin);
       var baseOpacity = isMobile
-        ? rnd(0.10, 0.18)
+        ? rnd(0.14, 0.24)
         : CONFIG.OPACITY_MIN + depthT * (CONFIG.OPACITY_MAX - CONFIG.OPACITY_MIN);
       particles.push({
         snippet:    SNIPPETS[i % SNIPPETS.length],

@@ -83,7 +83,7 @@ window.TIMELINE_EVENTS = [
         link: 'https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie',
         description: 'An evening on digital art in nightlife culture — DJs, VJs, and live coders at the intersection of technology and subculture, part of the Pixel Pioneers exhibition programme of Museum Boijmans Van Beuningen.',
         badges: ['livecoding', 'a/v'],
-        images: ['/images/export-1.jpg', '/images/export-2.jpg', '/images/export-3.jpg'],
+        images: ['/images/export-0.jpg', '/images/export-1.jpg', '/images/export-2.jpg'],
     },
     {
         type: 'software',
