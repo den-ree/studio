@@ -13,25 +13,58 @@
         return /^\d{4}-\d{2}-\d{2}$/.test(ev.date);
     }
 
+    function hasMonthDate(ev) {
+        return /^\d{4}-\d{2}$/.test(ev.date);
+    }
+
     function isUpcoming(ev) {
-        if (!hasFullDate(ev)) return false;
         var today = new Date();
         today.setHours(0, 0, 0, 0);
-        return new Date(ev.date + 'T00:00:00') >= today;
+        if (hasFullDate(ev)) {
+            return new Date(ev.date + 'T00:00:00') >= today;
+        }
+        if (hasMonthDate(ev)) {
+            var nowYm = today.getFullYear() * 100 + (today.getMonth() + 1);
+            var p = ev.date.split('-');
+            var evYm = parseInt(p[0], 10) * 100 + parseInt(p[1], 10);
+            return evYm >= nowYm;
+        }
+        return false;
     }
 
-    // '2026-07-09' → '09.07.2026'; '2026' → '2026'
+    // '2026-07-09' → '09.07.2026'; '2026-08' → '08.2026'; '2026' → '2026'
     function universeDate(ev) {
-        if (!hasFullDate(ev)) return ev.date;
-        var p = ev.date.split('-');
-        return p[2] + '.' + p[1] + '.' + p[0];
+        if (hasFullDate(ev)) {
+            var p = ev.date.split('-');
+            return p[2] + '.' + p[1] + '.' + p[0];
+        }
+        if (hasMonthDate(ev)) {
+            var m = ev.date.split('-');
+            return m[1] + '.' + m[0];
+        }
+        return ev.date;
     }
 
-    // '2026-07-09' → 'Jul 09, 2026'; '2026' → '2026'
+    // '2026-07-09' → 'Jul 09, 2026'; '2026-08' → 'Aug 2026'; '2026' → '2026'
     function logDate(ev) {
-        if (!hasFullDate(ev)) return ev.date;
-        var p = ev.date.split('-');
-        return MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[2] + ', ' + p[0];
+        if (hasFullDate(ev)) {
+            var p = ev.date.split('-');
+            return MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[2] + ', ' + p[0];
+        }
+        if (hasMonthDate(ev)) {
+            var m = ev.date.split('-');
+            return MONTHS[parseInt(m[1], 10) - 1] + ' ' + m[0];
+        }
+        return ev.date;
+    }
+
+    // Coordinate-style date for NEXT list: '08/26'
+    function upnextDate(ev) {
+        if (hasFullDate(ev) || hasMonthDate(ev)) {
+            var p = ev.date.split('-');
+            return p[1] + '/' + p[0].slice(2);
+        }
+        return ev.date;
     }
 
     function el(tag, className, text) {
@@ -64,12 +97,16 @@
         return ev.image ? [ev.image] : [];
     }
 
-    // Day number for date diffing; year-only dates anchor to Jan 1.
+    // Day number for date diffing; month-precision anchors to the 1st;
+    // year-only dates anchor to Jan 1.
     function eventDays(ev) {
         var d = ev.date || '';
         var ms;
         if (/^\d{4}-\d{2}-\d{2}$/.test(d)) ms = Date.parse(d + 'T00:00:00Z');
-        else if (/^\d{4}$/.test(d)) ms = Date.UTC(parseInt(d, 10), 0, 1);
+        else if (/^\d{4}-\d{2}$/.test(d)) {
+            var p = d.split('-');
+            ms = Date.UTC(parseInt(p[0], 10), parseInt(p[1], 10) - 1, 1);
+        } else if (/^\d{4}$/.test(d)) ms = Date.UTC(parseInt(d, 10), 0, 1);
         else ms = Date.parse(d);
         return isNaN(ms) ? 0 : ms / 86400000;
     }
@@ -116,10 +153,23 @@
         node.appendChild(marker);
 
         if (ev._coming) {
-            var comingTitle = el('span', 'tl-node__title');
-            comingTitle.appendChild(document.createTextNode('next is coming'));
-            comingTitle.appendChild(el('span', 'tl-node__ellipsis', '...'));
-            node.appendChild(comingTitle);
+            node.appendChild(el('span', 'tl-node__title', 'coming next'));
+            if (ev._upnext && ev._upnext.length) {
+                var list = el('ul', 'tl-node__upnext');
+                ev._upnext.forEach(function (item, i) {
+                    var row = el('li', 'tl-node__upnext-item tl-node__upnext-item--n' + i +
+                        (item.tentative ? ' tl-node__upnext-item--tentative' : ''));
+                    var parts = [upnextDate(item), item.title];
+                    if (item.city) parts.push(item.city);
+                    row.appendChild(el('span', 'tl-node__upnext-coords', parts.join(' - ')));
+                    if (item.tentative) {
+                        row.appendChild(document.createTextNode(' '));
+                        row.appendChild(el('span', 'tl-node__upnext-hope', '[tbc]'));
+                    }
+                    list.appendChild(row);
+                });
+                node.appendChild(list);
+            }
         } else {
             var label = universeDate(ev) + (ev.city ? ' · ' + ev.city : '');
             node.appendChild(el('span', 'tl-node__label', label));
@@ -154,16 +204,16 @@
         return node;
     }
 
-    function nextUpcoming() {
-        var upcoming = events.filter(isUpcoming);
-        if (!upcoming.length) return null;
-        return upcoming.reduce(function (soonest, ev) {
-            return ev.date < soonest.date ? ev : soonest;
+    // Soonest-first upcoming events (full-date and month-precision).
+    function upcomingSorted() {
+        return events.filter(isUpcoming).slice().sort(function (a, b) {
+            return eventDays(a) - eventDays(b);
         });
     }
 
-    // First node sits under the intro title (next… placeholder, or the next show).
+    // First node sits under the intro title (NEXT placeholder + upcoming list).
     // Rest of the timeline starts past the title’s right edge, connected by the polyline.
+    // Month-precision events stay off the strip — they only feed the NEXT list /music.
     var COMING_Y = 62;
 
     function initUniverse() {
@@ -172,17 +222,15 @@
         var svg = document.getElementById('tlSvg');
         if (!strip || !canvas || !svg) return;
 
-        var next = nextUpcoming();
-        var head = next || {
+        var head = {
             type: 'live',
             date: '',
-            title: 'next is coming…',
+            title: 'coming next',
             importance: 'normal',
-            _coming: true
+            _coming: true,
+            _upnext: upcomingSorted().slice(0, 3)
         };
-        var rest = next
-            ? events.filter(function (ev) { return ev !== next; })
-            : events.slice();
+        var rest = events.filter(function (ev) { return !hasMonthDate(ev); });
         var universeEvents = [head].concat(rest);
 
         var nodes = universeEvents.map(buildNode);
@@ -490,7 +538,11 @@
         }
         body.appendChild(title);
 
-        if (ev.description) body.appendChild(el('p', 'card-description', ev.description));
+        if (ev.description) {
+            body.appendChild(el('p', 'card-description', ev.description));
+        } else if (upcoming && (ev.tentative || hasMonthDate(ev))) {
+            body.appendChild(el('p', 'card-description', 'More details soon.'));
+        }
 
         var badges = el('div', 'card-badges');
         if (ev.venue) badges.appendChild(el('span', 'badge', ev.venue));

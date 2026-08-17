@@ -8,9 +8,14 @@
 // Fields:
 //   type         'live' | 'public' | 'journal' | 'software' | 'release'
 //                (sets node color; only 'live' appears on /music)
-//   date         'YYYY-MM-DD', or 'YYYY' when only the year is known.
-//                Events with a full date in the future are shown as "upcoming"
-//                automatically — no flag to flip after the show.
+//   date         'YYYY-MM-DD', 'YYYY-MM' (month known, day TBD), or 'YYYY'
+//                when only the year is known. Full-date and month-precision
+//                events in the future are shown as "upcoming" automatically —
+//                no flag to flip after the show. Year-only is never upcoming.
+//                Month-precision upcoming items feed the homepage NEXT list
+//                (and /music Upcoming) only — they are not strip nodes.
+//   tentative    Optional. true = unconfirmed ("more details soon"); shown with
+//                a [tbc] marker in the NEXT list.
 //   title        Event name (plain text)
 //   city         Optional. Shown next to the date.
 //   venue        Optional. Shown as a plain badge on /music.
@@ -31,6 +36,31 @@
 //   chip         Optional. Small media hint on the homepage node, e.g. '▶ listen'.
 
 window.TIMELINE_EVENTS = [
+    {
+        type: 'live',
+        date: '2026-10',
+        title: 'A/V performance',
+        city: 'Amsterdam',
+        tentative: true,
+        description: 'More details soon.',
+        badges: ['livecoding', 'a/v'],
+    },
+    {
+        type: 'live',
+        date: '2026-09',
+        title: 'A/V performance',
+        city: 'Rotterdam',
+        tentative: true,
+        description: 'More details soon.',
+        badges: ['livecoding', 'a/v'],
+    },
+    {
+        type: 'software',
+        date: '2026-08',
+        title: 'Tapelet 1.0',
+        link: 'https://tapelet.com/',
+        chip: '↗ try',
+    },
     {
         type: 'public',
         date: '2026-06-24',
@@ -53,7 +83,7 @@ window.TIMELINE_EVENTS = [
         link: 'https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie',
         description: 'An evening on digital art in nightlife culture — DJs, VJs, and live coders at the intersection of technology and subculture, part of the Pixel Pioneers exhibition programme of Museum Boijmans Van Beuningen.',
         badges: ['livecoding', 'a/v'],
-        images: ['/images/export-1.jpg', '/images/export-2.jpg', '/images/export-3.jpg'],
+        images: ['/images/export-0.jpg', '/images/export-1.jpg', '/images/export-2.jpg'],
     },
     {
         type: 'software',
