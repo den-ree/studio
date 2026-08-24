@@ -56,10 +56,13 @@ window.TIMELINE_EVENTS = [
     },
     {
         type: 'software',
-        date: '2026-08',
-        title: 'Tapelet 1.0',
-        link: 'https://tapelet.com/',
+        date: '2026-08-18',
+        title: 'Tapelet: Multitrack Recorder',
+        link: 'https://apps.apple.com/app/tapelet-multitrack-recorder/id6762547842?mt=12',
         chip: '↗ try',
+        images: ['/images/app-2.png'],
+        imageFit: 'contain',
+        imageRatio: '2496/2122',
     },
     {
         type: 'public',
