@@ -15,7 +15,7 @@
         '        <a href="https://denree.bandcamp.com/" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M0 8.5h8.7l-3.5 7H24l-3.5-7H0z"/></svg></a>',
         '    </div>',
         '    <p class="footer-copyright">&copy; 2026 Den Ree. All rights reserved.</p>',
-        '    <p class="footer-credits">Font: Karrik by Jean-Baptiste Morizot, Lucas Le Bihan. Distributed by <a href="https://velvetyne.fr" target="_blank" rel="noopener noreferrer">velvetyne.fr</a>.</p>',
+        '    <p class="footer-credits">Font: Karrik by Jean-Baptiste Morizot, Lucas Le Bihan by <a href="https://velvetyne.fr" target="_blank" rel="noopener noreferrer">velvetyne.fr</a>.</p>',
         '</div>'
     ].join('\n');
 })();

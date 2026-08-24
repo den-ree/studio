@@ -76,15 +76,12 @@
 
     /* ---------------- Homepage universe ---------------- */
 
-    var Y_PATTERN = [16, 54, 10, 58, 26, 54, 14, 52, 10, 42, 56, 24];
-
     // Horizontal distance between two neighbours =
     //   the left node's own width (so it can never overlap the next) + GUTTER,
     //   plus a compressed amount based on the time between their dates.
     var GUTTER = 30;            // min clear space after a node before the next marker
     var DATE_K = 22;           // px added per doubling of the weeks between two events
     var DATE_MAX_EXTRA = 120;  // cap, so a multi-year gap never runs off forever
-    var TITLE_MARGIN = 90;     // clear space after the intro title before the first node
     var CANVAS_TAIL = 90;      // slack after the last node
 
     // 'major' | 'normal' | 'minor'; journal notes default to minor
@@ -118,13 +115,11 @@
         return Math.min(DATE_MAX_EXTRA, Math.round(DATE_K * Math.log2(1 + weeks)));
     }
 
-    function nodeY(i, ev) {
-        var y = Y_PATTERN[i % Y_PATTERN.length];
-        // Taller nodes (thumbnails, major size) stay clear of the bottom edge
+    function maxYOf(ev) {
         var maxY = 100;
         if (imagesOf(ev).length) maxY = 54;
         if (importanceOf(ev) === 'major') maxY = 44;
-        return Math.min(y, maxY);
+        return maxY;
     }
 
     function buildNode(ev) {
@@ -211,10 +206,14 @@
         });
     }
 
-    // First node sits under the intro title (NEXT placeholder + upcoming list).
-    // Rest of the timeline starts past the title’s right edge, connected by the polyline.
+    // Coming-next anchors at a viewport left inset; Y alternates up/down for every node.
     // Month-precision events stay off the strip — they only feed the NEXT list /music.
-    var COMING_Y = 62;
+    var TITLE_TO_COMING = 18; // px gap under the title before the "up" band
+    var DOWN_BAND_SHARE = 0.22; // fraction of strip height from up → down band
+    var FOCUS_GUTTER = 96; // space between coming-next and the latest past event
+    var FOCUS_GUTTER_NARROW = 16;
+    var NARROW = 700;
+    var HINT_FADE = 40;
 
     function initUniverse() {
         var strip = document.getElementById('timelineStrip');
@@ -222,46 +221,96 @@
         var svg = document.getElementById('tlSvg');
         if (!strip || !canvas || !svg) return;
 
-        var head = {
+        var upnext = upcomingSorted().slice(0, 3);
+        var head = upnext.length ? {
             type: 'live',
             date: '',
             title: 'coming next',
             importance: 'normal',
             _coming: true,
-            _upnext: upcomingSorted().slice(0, 3)
-        };
+            _upnext: upnext
+        } : null;
         var rest = events.filter(function (ev) { return !hasMonthDate(ev); });
-        var universeEvents = [head].concat(rest);
+        var universeEvents = head ? [head].concat(rest) : rest.slice();
+        // First real strip event sits right of coming-next when present.
+        var focusIdx = head && rest.length ? 1 : 0;
 
         var nodes = universeEvents.map(buildNode);
         nodes.forEach(function (n) { canvas.appendChild(n); });
 
+        var homeScroll = 0;
+        var titleFadeAt = HINT_FADE;
+
+        function syncChrome() {
+            var delta = Math.abs(strip.scrollLeft - homeScroll);
+            var hint = document.getElementById('universeHint');
+            var title = document.getElementById('universeTitle');
+            if (hint) hint.style.opacity = delta > HINT_FADE ? '0' : '';
+            if (title) title.classList.toggle('is-hidden', delta > titleFadeAt);
+        }
+
         function layout() {
             var vw = window.innerWidth;
             var widths = nodes.map(function (n) { return n.offsetWidth || 200; });
+            var narrow = vw < NARROW;
+            var pairGutter = (head && rest.length)
+                ? (narrow ? FOCUS_GUTTER_NARROW : FOCUS_GUTTER)
+                : FOCUS_GUTTER;
+            var leftInset = Math.round(Math.max(16, Math.min(48, vw * 0.04)));
 
-            var titleEl = document.getElementById('universeTitle');
-            var titleW = titleEl ? titleEl.getBoundingClientRect().width : Math.min(vw * 0.8, 700);
-            // Center the first node under the title; trail starts just past the title edge.
-            var x0 = Math.round(vw / 2 - widths[0] / 2);
-            var startX = Math.round(vw / 2 + titleW / 2 + TITLE_MARGIN);
-
-            var xs = [x0];
+            // Chain nodes left → right; pad so coming-next sits at the left inset.
+            var xs = [0];
             for (var i = 1; i < universeEvents.length; i++) {
-                if (i === 1) {
-                    xs.push(Math.max(startX, x0 + widths[0] + GUTTER));
+                var gap;
+                if (i === 1 && head) {
+                    gap = widths[0] + pairGutter;
                 } else {
-                    var gap = widths[i - 1] + GUTTER + dateExtra(universeEvents[i - 1], universeEvents[i]);
-                    xs.push(xs[i - 1] + Math.round(gap));
+                    gap = widths[i - 1] + GUTTER + dateExtra(universeEvents[i - 1], universeEvents[i]);
                 }
+                xs.push(xs[i - 1] + Math.round(gap));
             }
+
+            // Target: coming-next (or sole focus) starts at leftInset → homeScroll stays 0.
+            var anchorIdx = head ? 0 : focusIdx;
+            var anchorLeft = xs[anchorIdx] || 0;
+            var target = leftInset + (widths[anchorIdx] || 0) / 2;
+            var focusCenter = anchorLeft + (widths[anchorIdx] || 0) / 2;
+            var leftPad = Math.max(0, Math.round(target - focusCenter));
+            for (var j = 0; j < xs.length; j++) xs[j] += leftPad;
+
+            if (focusIdx + 1 < xs.length) {
+                titleFadeAt = Math.max(HINT_FADE, Math.round((xs[focusIdx + 1] - xs[focusIdx]) * 0.6));
+            } else {
+                titleFadeAt = HINT_FADE;
+            }
+
+            var stripH = strip.clientHeight || 1;
+            var titleEl = document.getElementById('universeTitle');
+            var upY = 28;
+            if (titleEl && stripH) {
+                var stripTop = strip.getBoundingClientRect().top;
+                var underTitle = titleEl.getBoundingClientRect().bottom - stripTop + TITLE_TO_COMING;
+                upY = Math.max(14, Math.min(48, (underTitle / stripH) * 100));
+            }
+            var downY = Math.min(56, upY + (DOWN_BAND_SHARE * 100));
 
             nodes.forEach(function (n, i) {
                 n.style.setProperty('--x', xs[i] + 'px');
-                n.style.setProperty('--y', (i === 0 ? COMING_Y : nodeY(i - 1, universeEvents[i])) + '%');
+                var band = (i % 2 === 0) ? upY : downY;
+                var y = Math.min(band, maxYOf(universeEvents[i]));
+                n.style.setProperty('--y', y + '%');
             });
-            canvas.style.width = (xs[xs.length - 1] + widths[widths.length - 1] + CANVAS_TAIL) + 'px';
+            canvas.style.width = (xs.length
+                ? xs[xs.length - 1] + widths[widths.length - 1] + CANVAS_TAIL
+                : vw) + 'px';
+
+            // Keep homeScroll at 0 when left-anchored (leftPad already places the start).
+            var prevHome = homeScroll;
+            homeScroll = 0;
+            var delta = strip.scrollLeft - prevHome;
+            strip.scrollLeft = Math.max(0, homeScroll + delta);
             drawLines();
+            syncChrome();
         }
 
         function drawLines() {
@@ -281,8 +330,8 @@
 
         layout();
         window.addEventListener('resize', layout);
-        window.addEventListener('load', drawLines);
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
+        window.addEventListener('load', layout);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
         // --- shared scroll state: one writer, one animation slot ---
         // Native scrollLeft clamps at [0, max]; iOS-style overscroll is kept as a
@@ -378,26 +427,8 @@
             });
         }
 
-        var step = 400;
-        document.getElementById('tlPrev').addEventListener('click', function () {
-            cancelAnimation();
-            setScroll(strip.scrollLeft, false);
-            strip.scrollBy({ left: -step, behavior: 'smooth' });
-        });
-        document.getElementById('tlNext').addEventListener('click', function () {
-            cancelAnimation();
-            setScroll(strip.scrollLeft, false);
-            strip.scrollBy({ left: step, behavior: 'smooth' });
-        });
-
-        // The title stays put; fade it (and the swipe hint) once the user starts exploring
-        var hint = document.getElementById('universeHint');
-        var title = document.getElementById('universeTitle');
-        strip.addEventListener('scroll', function () {
-            var exploring = strip.scrollLeft > 40;
-            if (hint) hint.style.opacity = exploring ? '0' : '';
-            if (title) title.classList.toggle('is-hidden', exploring);
-        }, { passive: true });
+        // Fade title and swipe hint once the user starts exploring
+        strip.addEventListener('scroll', syncChrome, { passive: true });
 
         // Vertical wheel/trackpad drives the strip horizontally (down → into timeline).
         // On the viewport-locked homepage, capture on window so header/chrome still work.

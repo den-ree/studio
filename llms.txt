@@ -27,7 +27,7 @@ Den Ree is the personal site of a musician, livecoder, and A/V performer based i
 
 ## Software for artists
 
-- Tapelet: Multi-channel audio recording app (Beta) for capturing performances and ideas
+- Tapelet: Multitrack Recorder — Mac app for capturing performances and ideas, now on the App Store: https://apps.apple.com/app/tapelet-multitrack-recorder/id6762547842?mt=12
 - Content Office: Instagram planner app for creators
 - NDA/studio: creative technology studio — https://www.nda.studio
 - Collaborations: mobile development (iOS and cross-platform) for artists, studios, and founders — prototypes to App Store releases
