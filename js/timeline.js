@@ -58,11 +58,15 @@
         return ev.date;
     }
 
-    // Coordinate-style date for NEXT list: '08/26'
+    // Compact date for NEXT list: '18.09' when the day is known, else '09.2026'
     function upnextDate(ev) {
-        if (hasFullDate(ev) || hasMonthDate(ev)) {
+        if (hasFullDate(ev)) {
             var p = ev.date.split('-');
-            return p[1] + '/' + p[0].slice(2);
+            return p[2] + '.' + p[1];
+        }
+        if (hasMonthDate(ev)) {
+            var m = ev.date.split('-');
+            return m[1] + '.' + m[0];
         }
         return ev.date;
     }
@@ -153,10 +157,19 @@
                 var list = el('ul', 'tl-node__upnext');
                 ev._upnext.forEach(function (item, i) {
                     var row = el('li', 'tl-node__upnext-item tl-node__upnext-item--n' + i +
-                        (item.tentative ? ' tl-node__upnext-item--tentative' : ''));
+                        (item.tentative ? ' tl-node__upnext-item--tentative' : '') +
+                        (item.link ? ' tl-node__upnext-item--link' : ''));
                     var parts = [upnextDate(item), item.title];
                     if (item.city) parts.push(item.city);
-                    row.appendChild(el('span', 'tl-node__upnext-coords', parts.join(' - ')));
+                    var coords = el(item.link ? 'a' : 'span', 'tl-node__upnext-coords', parts.join(' - '));
+                    if (item.link) {
+                        coords.href = item.link;
+                        if (/^https?:/.test(item.link)) {
+                            coords.target = '_blank';
+                            coords.rel = 'noopener noreferrer';
+                        }
+                    }
+                    row.appendChild(coords);
                     if (item.tentative) {
                         row.appendChild(document.createTextNode(' '));
                         row.appendChild(el('span', 'tl-node__upnext-hope', '[tbc]'));
@@ -207,13 +220,160 @@
     }
 
     // Coming-next anchors at a viewport left inset; Y alternates up/down for every node.
-    // Month-precision events stay off the strip — they only feed the NEXT list /music.
+    // Upcoming events stay off the strip — they only feed the NEXT list /music.
     var TITLE_TO_COMING = 18; // px gap under the title before the "up" band
     var DOWN_BAND_SHARE = 0.22; // fraction of strip height from up → down band
     var FOCUS_GUTTER = 96; // space between coming-next and the latest past event
     var FOCUS_GUTTER_NARROW = 16;
     var NARROW = 700;
     var HINT_FADE = 40;
+
+    function isTouchUi() {
+        return window.matchMedia('(hover: none)').matches;
+    }
+
+    var lightboxState = { sources: [], index: 0, alt: '' };
+    var lightboxSwipe = { x: 0, y: 0, active: false, moved: false };
+
+    function onLightboxKey(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            return;
+        }
+        if (lightboxState.sources.length < 2) return;
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            showLightboxAt(lightboxState.index + 1);
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            showLightboxAt(lightboxState.index - 1);
+        }
+    }
+
+    function showLightboxAt(index) {
+        var n = lightboxState.sources.length;
+        if (!n) return;
+        lightboxState.index = ((index % n) + n) % n;
+        var box = ensureLightbox();
+        var img = box.querySelector('.tl-lightbox__img');
+        img.src = lightboxState.sources[lightboxState.index];
+        img.alt = lightboxState.alt || '';
+        box.classList.toggle('tl-lightbox--multi', n > 1);
+        var counter = box.querySelector('.tl-lightbox__counter');
+        if (counter) {
+            counter.textContent = (lightboxState.index + 1) + ' / ' + n;
+            counter.hidden = n < 2;
+        }
+        var prev = box.querySelector('.tl-lightbox__nav--prev');
+        var next = box.querySelector('.tl-lightbox__nav--next');
+        if (prev) prev.hidden = n < 2;
+        if (next) next.hidden = n < 2;
+    }
+
+    function ensureLightbox() {
+        var box = document.getElementById('tlLightbox');
+        if (box) return box;
+        box = el('div', 'tl-lightbox');
+        box.id = 'tlLightbox';
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', 'Image preview');
+
+        var prev = el('button', 'tl-lightbox__nav tl-lightbox__nav--prev', '<');
+        prev.type = 'button';
+        prev.setAttribute('aria-label', 'Previous image');
+        prev.hidden = true;
+
+        var next = el('button', 'tl-lightbox__nav tl-lightbox__nav--next', '>');
+        next.type = 'button';
+        next.setAttribute('aria-label', 'Next image');
+        next.hidden = true;
+
+        var img = el('img', 'tl-lightbox__img');
+        img.alt = '';
+
+        var counter = el('span', 'tl-lightbox__counter');
+        counter.hidden = true;
+
+        box.appendChild(prev);
+        box.appendChild(img);
+        box.appendChild(next);
+        box.appendChild(counter);
+
+        prev.addEventListener('click', function (e) {
+            e.stopPropagation();
+            showLightboxAt(lightboxState.index - 1);
+        });
+        next.addEventListener('click', function (e) {
+            e.stopPropagation();
+            showLightboxAt(lightboxState.index + 1);
+        });
+
+        box.addEventListener('click', function (e) {
+            if (lightboxSwipe.moved) {
+                lightboxSwipe.moved = false;
+                return;
+            }
+            if (e.target === prev || e.target === next || e.target === counter) return;
+            closeLightbox();
+        });
+
+        box.addEventListener('touchstart', function (e) {
+            if (lightboxState.sources.length < 2 || !e.touches.length) return;
+            lightboxSwipe.active = true;
+            lightboxSwipe.moved = false;
+            lightboxSwipe.x = e.touches[0].clientX;
+            lightboxSwipe.y = e.touches[0].clientY;
+        }, { passive: true });
+
+        box.addEventListener('touchmove', function (e) {
+            if (!lightboxSwipe.active || !e.touches.length) return;
+            var dx = e.touches[0].clientX - lightboxSwipe.x;
+            var dy = e.touches[0].clientY - lightboxSwipe.y;
+            if (Math.abs(dx) > 12 || Math.abs(dy) > 12) lightboxSwipe.moved = true;
+        }, { passive: true });
+
+        box.addEventListener('touchend', function (e) {
+            if (!lightboxSwipe.active) return;
+            lightboxSwipe.active = false;
+            if (lightboxState.sources.length < 2) return;
+            var t = e.changedTouches && e.changedTouches[0];
+            if (!t) return;
+            var dx = t.clientX - lightboxSwipe.x;
+            var dy = t.clientY - lightboxSwipe.y;
+            if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+            showLightboxAt(lightboxState.index + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+
+        box.addEventListener('touchcancel', function () {
+            lightboxSwipe.active = false;
+        }, { passive: true });
+
+        document.body.appendChild(box);
+        return box;
+    }
+
+    function openLightbox(sources, index, alt) {
+        var list = Array.isArray(sources) ? sources.filter(Boolean) : [sources];
+        if (!list.length) return;
+        lightboxState.sources = list;
+        lightboxState.alt = alt || '';
+        lightboxState.index = Math.max(0, Math.min(index || 0, list.length - 1));
+        ensureLightbox();
+        showLightboxAt(lightboxState.index);
+        var box = document.getElementById('tlLightbox');
+        box.classList.add('is-visible');
+        document.addEventListener('keydown', onLightboxKey);
+    }
+
+    function closeLightbox() {
+        var box = document.getElementById('tlLightbox');
+        if (!box) return;
+        box.classList.remove('is-visible');
+        lightboxState.sources = [];
+        lightboxState.index = 0;
+        document.removeEventListener('keydown', onLightboxKey);
+    }
 
     function initUniverse() {
         var strip = document.getElementById('timelineStrip');
@@ -230,7 +390,7 @@
             _coming: true,
             _upnext: upnext
         } : null;
-        var rest = events.filter(function (ev) { return !hasMonthDate(ev); });
+        var rest = events.filter(function (ev) { return !isUpcoming(ev); });
         var universeEvents = head ? [head].concat(rest) : rest.slice();
         // First real strip event sits right of coming-next when present.
         var focusIdx = head && rest.length ? 1 : 0;
@@ -533,12 +693,46 @@
         strip.addEventListener('touchend', touchRelease, { passive: true });
         strip.addEventListener('touchcancel', touchRelease, { passive: true });
 
-        // Suppress node clicks that were actually drags
+        function closeOpenStacks(except) {
+            canvas.querySelectorAll('.tl-node.is-open').forEach(function (n) {
+                if (n !== except) n.classList.remove('is-open');
+            });
+        }
+
+        // Suppress drag-as-click; fan photo stacks on touch; lightbox on photo tap/click.
         strip.addEventListener('click', function (e) {
             if (dragMoved) {
                 e.preventDefault();
                 dragMoved = false;
+                return;
             }
+
+            var media = e.target.closest && e.target.closest('.tl-node__media');
+            if (!media) {
+                closeOpenStacks(null);
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var node = media.closest('.tl-node');
+            var stack = media.closest('.tl-node__mediastack');
+            var count = stack ? stack.querySelectorAll('.tl-node__media').length : 1;
+
+            // Mobile: first tap on a multi-image stack fans it out (same as desktop hover).
+            if (isTouchUi() && count > 1 && node && !node.classList.contains('is-open')) {
+                closeOpenStacks(node);
+                node.classList.add('is-open');
+                return;
+            }
+
+            var imgs = [...stack.querySelectorAll('.tl-node__media')];
+            openLightbox(
+                imgs.map(function (m) { return m.currentSrc || m.src; }),
+                imgs.indexOf(media),
+                media.alt
+            );
         }, true);
     }
 
@@ -592,7 +786,7 @@
         if (!root) return;
 
         var live = events.filter(function (ev) { return ev.type === 'live'; });
-        var upcoming = live.filter(isUpcoming);
+        var upcoming = upcomingSorted().filter(function (ev) { return ev.type === 'live'; });
         var past = live.filter(function (ev) { return !isUpcoming(ev); });
 
         if (upcoming.length) {
