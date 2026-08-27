@@ -1281,6 +1281,32 @@ body.page-universe main {
     white-space: nowrap;
 }
 
+.universe-hint__arrow {
+    display: inline-block;
+    opacity: 0;
+    animation: universe-hint-arrow 4.5s ease-in-out infinite;
+}
+
+.universe-hint__arrow:nth-child(1) { animation-delay: 0s; }
+.universe-hint__arrow:nth-child(2) { animation-delay: 0.55s; }
+.universe-hint__arrow:nth-child(3) { animation-delay: 1.1s; }
+
+@keyframes universe-hint-arrow {
+    0%,
+    8% { opacity: 0; }
+    18%,
+    55% { opacity: 1; }
+    70%,
+    100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .universe-hint__arrow {
+        opacity: 0.45;
+        animation: none;
+    }
+}
+
 .universe-credit {
     position: absolute;
     left: 1.25rem;
@@ -1394,7 +1420,6 @@ a.tl-node:hover {
     letter-spacing: 0.04em;
     margin: 0.22rem 0 0;
     padding-left: 0.7em;
-    white-space: nowrap;
 }
 
 .tl-node__upnext-item::before {
@@ -1420,8 +1445,22 @@ a.tl-node:hover {
 .tl-node__upnext-item--n2::before { color: rgba(92, 204, 106, 0.34); }
 
 .tl-node__upnext-coords {
+    color: inherit;
     letter-spacing: 0.08em;
     opacity: 0.85;
+    text-decoration: none;
+}
+
+a.tl-node__upnext-coords {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+a.tl-node__upnext-coords:hover,
+a.tl-node__upnext-coords:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
 }
 
 .tl-node__upnext-hope {
@@ -1601,6 +1640,7 @@ a.tl-node:hover .tl-node__title {
     border: 1px solid rgba(255, 255, 255, 0.25);
     background: #0a0a0a;
     opacity: 0.85;
+    cursor: zoom-in;
     transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.25s ease;
 }
 
@@ -1626,14 +1666,102 @@ a.tl-node:hover .tl-node__media:nth-child(3) {
     transform: rotate(-5.5deg) translate(-14px, -14px);
 }
 
+.tl-node.is-open .tl-node__media:nth-child(2) {
+    transform: rotate(6deg) translate(13px, -8px);
+}
+
+.tl-node.is-open .tl-node__media:nth-child(3) {
+    transform: rotate(-5.5deg) translate(-14px, -14px);
+}
+
 .tl-node__media--contain {
     object-fit: contain;
     padding: 6px;
 }
 
-a.tl-node:hover .tl-node__media {
+a.tl-node:hover .tl-node__media,
+.tl-node.is-open .tl-node__media {
     opacity: 1;
     border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Full-size event photo overlay */
+.tl-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.88);
+    cursor: zoom-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.tl-lightbox.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tl-lightbox__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #0a0a0a;
+    pointer-events: none;
+}
+
+.tl-lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.45);
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Karrik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.tl-lightbox__nav:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.tl-lightbox__nav--prev { left: 1rem; }
+.tl-lightbox__nav--next { right: 1rem; }
+
+.tl-lightbox__counter {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Karrik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    pointer-events: none;
+}
+
+@media (hover: none) {
+    .tl-lightbox__nav {
+        display: none;
+    }
 }
 
 .tl-node__mediachip {
