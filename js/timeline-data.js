@@ -1,4 +1,4 @@
-// Timeline data — the single source of truth for:
+// Timeline data - the single source of truth for:
 //   - the homepage universe (/)          → all events
 //   - the performance log (/music)      → events with type 'live'
 //
@@ -12,8 +12,8 @@
 //                when only the year is known. Full-date and month-precision
 //                events in the future are shown as "upcoming" automatically —
 //                no flag to flip after the show. Year-only is never upcoming.
-//                Month-precision upcoming items feed the homepage NEXT list
-//                (and /music Upcoming) only — they are not strip nodes.
+//                Upcoming items feed the homepage NEXT list (and /music
+//                Upcoming) only - they are not strip nodes.
 //   tentative    Optional. true = unconfirmed ("more details soon"); shown with
 //                a [tbc] marker in the NEXT list.
 //   title        Event name (plain text)
@@ -38,20 +38,22 @@
 window.TIMELINE_EVENTS = [
     {
         type: 'live',
-        date: '2026-10',
-        title: 'A/V performance',
+        date: '2026-10-21',
+        title: 'Live Coding Sessions #12 - Algorave',
         city: 'Amsterdam',
-        tentative: true,
-        description: 'More details soon.',
-        badges: ['livecoding', 'a/v'],
+        venue: 'Doka',
+        link: 'https://www.instagram.com/p/DcMzlwEi0C_/',
+        description: 'Season-closing Algorave at Doka during ADE, with first-time guests including Den Ree.',
+        badges: ['livecoding', 'algorave'],
     },
     {
         type: 'live',
-        date: '2026-09',
-        title: 'A/V performance',
+        date: '2026-09-18',
+        title: 'GRAW - Performance / Installation',
         city: 'Rotterdam',
-        tentative: true,
-        description: 'More details soon.',
+        venue: 'De Achtertuin',
+        link: 'https://www.instagram.com/p/DcTreeiAs-Z',
+        description: 'Performance / installation at De Achtertuin during Groot Rotterdams Atelier Weekend - group show and COUNTERBODIES 6th edition, opening Friday.',
         badges: ['livecoding', 'a/v'],
     },
     {
@@ -71,7 +73,7 @@ window.TIMELINE_EVENTS = [
         importance: 'minor',
         city: 'Hilversum',
         venue: 'Beeld & Geluid',
-        link: 'https://www.linkedin.com/posts/maxtiel_last-tuesday-we-closed-a-chapter-open-culture-ugcPost-7477339512226942976-a-vw',
+        link: 'https://publications.beeldengeluid.nl/pub/2575/Open-Culture-Tech-publication-Opening-the-Code-Expanding-the-Stage.pdf',
         description: 'Open Culture Tech is a residency program that helps artists get hands-on with AI and immersive tech, built on public values and open source from the start.',
         badges: ['livecoding', 'a/v'],
         images: ['/images/beeldengeluid-1.jpeg', '/images/beeldengeluid-2.jpeg'],
@@ -84,7 +86,7 @@ window.TIMELINE_EVENTS = [
         city: 'Rotterdam',
         venue: 'Export',
         link: 'https://www.boijmans.nl/activiteiten/pixel-pioneers-drie-avonden-over-digitale-kunst-en-technologie',
-        description: 'An evening on digital art in nightlife culture — DJs, VJs, and live coders at the intersection of technology and subculture, part of the Pixel Pioneers exhibition programme of Museum Boijmans Van Beuningen.',
+        description: 'An evening on digital art in nightlife culture - DJs, VJs, and live coders at the intersection of technology and subculture, part of the Pixel Pioneers exhibition programme of Museum Boijmans Van Beuningen.',
         badges: ['livecoding', 'a/v'],
         images: ['/images/export-0.jpg', '/images/export-1.jpg', '/images/export-2.jpg'],
     },
