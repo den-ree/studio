@@ -159,9 +159,7 @@
                     var row = el('li', 'tl-node__upnext-item tl-node__upnext-item--n' + i +
                         (item.tentative ? ' tl-node__upnext-item--tentative' : '') +
                         (item.link ? ' tl-node__upnext-item--link' : ''));
-                    var parts = [upnextDate(item), item.title];
-                    if (item.city) parts.push(item.city);
-                    var coords = el(item.link ? 'a' : 'span', 'tl-node__upnext-coords', parts.join(' - '));
+                    var coords = el(item.link ? 'a' : 'span', 'tl-node__upnext-coords');
                     if (item.link) {
                         coords.href = item.link;
                         if (/^https?:/.test(item.link)) {
@@ -169,11 +167,19 @@
                             coords.rel = 'noopener noreferrer';
                         }
                     }
-                    row.appendChild(coords);
+                    var line = el('span', 'tl-node__upnext-line', upnextDate(item) + ' - ' + item.title);
+                    coords.appendChild(line);
                     if (item.tentative) {
-                        row.appendChild(document.createTextNode(' '));
-                        row.appendChild(el('span', 'tl-node__upnext-hope', '[tbc]'));
+                        line.appendChild(document.createTextNode(' '));
+                        line.appendChild(el('span', 'tl-node__upnext-hope', '[tbc]'));
                     }
+                    var metaParts = [];
+                    if (item.kind) metaParts.push(item.kind);
+                    if (item.city) metaParts.push(item.city);
+                    if (metaParts.length) {
+                        coords.appendChild(el('span', 'tl-node__upnext-meta', metaParts.join(' - ')));
+                    }
+                    row.appendChild(coords);
                     list.appendChild(row);
                 });
                 node.appendChild(list);

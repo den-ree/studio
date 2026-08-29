@@ -1377,7 +1377,7 @@ a.tl-node:hover {
 
 .tl-node--coming {
     width: auto;
-    max-width: 260px;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1416,9 +1416,9 @@ a.tl-node:hover {
     position: relative;
     font-family: 'Karrik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 0.62rem;
-    line-height: 1.45;
+    line-height: 1.35;
     letter-spacing: 0.04em;
-    margin: 0.22rem 0 0;
+    margin: 0.5rem 0 0;
     padding-left: 0.7em;
 }
 
@@ -1457,10 +1457,20 @@ a.tl-node__upnext-coords {
     z-index: 1;
 }
 
-a.tl-node__upnext-coords:hover,
-a.tl-node__upnext-coords:focus-visible {
+a.tl-node__upnext-coords:hover .tl-node__upnext-line,
+a.tl-node__upnext-coords:focus-visible .tl-node__upnext-line {
     text-decoration: underline;
     text-underline-offset: 0.18em;
+}
+
+.tl-node__upnext-line,
+.tl-node__upnext-meta {
+    display: block;
+}
+
+.tl-node__upnext-meta {
+    opacity: 0.72;
+    letter-spacing: 0.06em;
 }
 
 .tl-node__upnext-hope {
@@ -1820,7 +1830,7 @@ a.tl-node:hover .tl-node__media,
     }
 
     .tl-node--coming {
-        max-width: 160px;
+        max-width: 200px;
     }
 
     .tl-node--major {

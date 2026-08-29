@@ -17,7 +17,9 @@
 //   tentative    Optional. true = unconfirmed ("more details soon"); shown with
 //                a [tbc] marker in the NEXT list.
 //   title        Event name (plain text)
-//   city         Optional. Shown next to the date.
+//   kind         Optional. Performance type on the NEXT list second line,
+//                e.g. 'Algorave', 'Performance / Installation'.
+//   city         Optional. Shown as 'City, Country' (e.g. 'Rotterdam, NL').
 //   venue        Optional. Shown as a plain badge on /music.
 //   link         Optional. Event page / tickets / recap / app / post URL.
 //   description  Optional. One sentence, shown on /music only.
@@ -38,9 +40,21 @@
 window.TIMELINE_EVENTS = [
     {
         type: 'live',
+        date: '2026-11-06',
+        title: 'ZONE XP',
+        kind: 'Algorave',
+        city: 'Lyon, FR',
+        venue: 'Le Sucre',
+        link: 'https://www.grame.fr/',
+        description: 'Algorave evening at Le Sucre for the first edition of Grame Festival ZONE XP.',
+        badges: ['livecoding', 'algorave'],
+    },
+    {
+        type: 'live',
         date: '2026-10-21',
-        title: 'Live Coding Sessions #12 - Algorave',
-        city: 'Amsterdam',
+        title: 'Live Coding Sessions #12',
+        kind: 'Algorave',
+        city: 'Amsterdam, NL',
         venue: 'Doka',
         link: 'https://www.instagram.com/p/DcMzlwEi0C_/',
         description: 'Season-closing Algorave at Doka during ADE, with first-time guests including Den Ree.',
@@ -49,11 +63,12 @@ window.TIMELINE_EVENTS = [
     {
         type: 'live',
         date: '2026-09-18',
-        title: 'GRAW - Performance / Installation',
-        city: 'Rotterdam',
+        title: 'GRAW',
+        kind: 'Performance / Installation',
+        city: 'Rotterdam, NL',
         venue: 'De Achtertuin',
         link: 'https://www.instagram.com/p/DcTreeiAs-Z',
-        description: 'Performance / installation at De Achtertuin during Groot Rotterdams Atelier Weekend - group show and COUNTERBODIES 6th edition, opening Friday.',
+        description: 'Performance / installation at De Achtertuin during Groot Rotterdams Atelier Weekend — group show and COUNTERBODIES 6th edition, opening Friday.',
         badges: ['livecoding', 'a/v'],
     },
     {
