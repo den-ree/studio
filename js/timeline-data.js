@@ -52,10 +52,10 @@ window.TIMELINE_EVENTS = [
     {
         type: 'live',
         date: '2026-10-21',
-        title: 'Live Coding Sessions #12',
+        title: 'ADE - Live Coding Sessions',
         kind: 'Algorave',
-        city: 'Amsterdam, NL',
-        venue: 'Doka',
+        city: 'DOKA, Amsterdam, NL',
+        venue: 'DOKA',
         link: 'https://www.instagram.com/p/DcMzlwEi0C_/',
         description: 'Season-closing Algorave at Doka during ADE, with first-time guests including Den Ree.',
         badges: ['livecoding', 'algorave'],
